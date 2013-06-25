@@ -1,4 +1,7 @@
-HTML5Tetris
+HTML5 Tetris
 ===========
 
-Tetris using Typescript, EaselJs and Underscore
+Tetris 
+  - Typescript
+  - EaselJs
+  - Underscore
