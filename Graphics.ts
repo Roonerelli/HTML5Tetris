@@ -15,8 +15,8 @@ module Graphics {
     export class TetrisTimer {
 
         constructor() {
-            createjs.Ticker.setInterval(25);
-            createjs.Ticker.setFPS(40);
+            createjs.Ticker.setInterval(200);
+            createjs.Ticker.setFPS(2);
             createjs.Ticker.useRAF = true;
         }
 
@@ -45,6 +45,10 @@ module Graphics {
             this.stage.addChild(ele);
         }
 
+        removeChild(ele: any) {
+            this.stage.removeChild(ele);
+        }
+
         update() {
             this.stage.update();
         }
@@ -59,19 +63,23 @@ module Graphics {
     export class TetrisRect {
 
         private rect;
+        private canvas : TetrisCanvas;
 
         constructor(canvas: TetrisCanvas, x, y, w, h, color) {
             this.rect = new createjs.Shape();
             this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
-            canvas.addChild(this.rect);
-            canvas.update();
+            this.canvas = canvas;
+            this.canvas.addChild(this.rect);
+            this.canvas.update();
         }
 
         move(dx: number, dy: number) {
-            console.log(this);
-            
             this.rect.x += dx;
             this.rect.y += dy;
+        }
+
+        remove() {
+            this.canvas.removeChild(this.rect);
         }
     } 
 }
@@ -103,18 +111,23 @@ module Game {
 
         dropByOne() {
             this.moved = this.move(0, 1, 0);
+            return this.moved;
         }
 
         move(deltaX, deltaY, deltaRotation) {
             this.moved = true;
             var potential = this.all_rotations[(this.rotation_index + deltaRotation) % this.all_rotations.length];
 
-            potential.forEach(function(posns) {
-                if (this.board.emptyAt([posns[0] + deltaX + this.base_position[0],
-                                    posns[1] + deltaY + this.base_position[1]])) {
+            for (var index = 0; index < potential.length; ++index) {
+                var posns = potential[index];
+                if(this.board.emptyAt([
+                    posns[0] + deltaX + this.base_position[0], 
+                    posns[1] + deltaY + this.base_position[1]
+                ])) {
                     this.moved = false;
                 }
-            });
+            }
+
 
             if (this.moved) {
                 this.base_position[0] += deltaX;
@@ -141,19 +154,19 @@ module Game {
 
     export class Board {
 
-        game: Tetris;
         grid: any;
         currentBlock: Piece;
-        current_pos: any;
+        score = 0;
+        game: Tetris;
+        delay = 500;
 
         blockSize = 15;
         numColumns = 10;
         numRows = 27;
-        score = 0;
-        delay = 500;
+        current_pos: any;
 
+        
         constructor(game: Tetris) {
-            this.game = game;
             //this.grid = _.map(_.range(this.numRows), function(){return _.range(this.numColumns)});
 
             this.grid = new Array(this.numRows);
@@ -163,6 +176,8 @@ module Game {
             }
 
             this.currentBlock = Piece.next_piece(this);
+            this.game = game;
+            
         }
 
         emptyAt (point) {
@@ -176,6 +191,8 @@ module Game {
                 //this.storeCurrent();
             
             }
+
+            this.draw();
         
         }
 
@@ -211,17 +228,38 @@ module Game {
         
         tick() {
             if (this.isRunning) {
-                this.rect.move(0, 3);
-                this.canvas.update();
+                //this.rect.move(0, 3);
+                this.board.run();
             }
         }
 
         draw_piece(piece: Piece, old) {
-            old = null;
+
+            if (old != null && piece.moved) {
+                for (var i = 0; i < old.length; i++) {
+                    var o = old[i];
+                    o.remove();
+                }
+            }
+            
             var size = this.board.blockSize;
             var blocks = piece.current_rotation();
             var start = piece.base_position;
-        
+
+            var results = [];
+
+            for (var i = 0; i < blocks.length; i++) {
+                var block = blocks[i];
+
+                results.push(new Graphics.TetrisRect(this.canvas, 
+                                    start[0] * size + block[0]*size + 3,
+                                    start[1] * size + block[1]*size,
+                                    start[0] * size + size + block[0]*size + 3,
+                                    start[1] * size + size + block[1]*size,
+                                    piece.color));
+            }
+
+            return results;
         }
     }
 }
