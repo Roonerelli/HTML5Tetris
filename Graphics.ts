@@ -1,14 +1,31 @@
-
 var createjs;
 
 module Graphics {
 
     export class TetrisRoot {
         
+        static keyBindings = {};
+
         constructor() {
-        } 
+            document.body.onkeydown = function (event) {
+                event = event || window.event;
+                var keycode = event.charCode || event.keyCode;
+
+                console.log('key pressed. ');
+                console.log(TetrisRoot.keyBindings);
+                var closur = TetrisRoot.keyBindings['' + keycode];
+
+                closur();
+
+                if (keycode === 37) {
+                    alert("Hi");
+                }
+            }
+        }
 
         bind(char, callback) {
+            TetrisRoot.keyBindings[char] = callback;
+            console.log(TetrisRoot.keyBindings);
         }
     }
 
@@ -45,7 +62,7 @@ module Graphics {
             this.stage.addChild(ele);
         }
 
-        removeChild(ele: any) {
+        removeChild(ele: TetrisRect) {
             this.stage.removeChild(ele);
         }
 
@@ -62,7 +79,7 @@ module Graphics {
 
     export class TetrisRect {
 
-        private rect;
+        public rect;
         private canvas : TetrisCanvas;
 
         constructor(canvas: TetrisCanvas, x, y, w, h, color) {
@@ -89,19 +106,19 @@ module Game {
 
     export class Piece {
         
-        board: Board;
         all_rotations;
         rotation_index;
         color;
-        base_position = [5,0];
+        base_position = [5, 0];
+        board: Board;
         moved = true;
         
         constructor(pointArray, board : Board) {
             this.all_rotations = pointArray;
-            this.board = board;
             this.rotation_index = 0; //TODO:randomize
             this.color = "Red"; //TODO: get random from All Colors array
-            this.base_position = [5,0];
+            this.base_position = [5, 0];
+            this.board = board;
             this.moved = true;
         }
 
@@ -122,8 +139,7 @@ module Game {
                 var posns = potential[index];
                 if(this.board.emptyAt([
                     posns[0] + deltaX + this.base_position[0], 
-                    posns[1] + deltaY + this.base_position[1]
-                ])) {
+                    posns[1] + deltaY + this.base_position[1]])) {
                     this.moved = false;
                 }
             }
@@ -177,9 +193,14 @@ module Game {
 
             this.currentBlock = Piece.next_piece(this);
             this.game = game;
-            
+        
         }
 
+        game_over() {
+            return false;
+            //this.grid[1]      
+        }
+    
         emptyAt (point) {
 
         }
@@ -194,6 +215,34 @@ module Game {
 
             this.draw();
         
+        }
+
+        move_left() {
+            if (!this.game_over() && this.game.isRunning) {
+                this.currentBlock.move(-1, 0, 0);
+            }
+            this.draw();
+        }
+
+        move_right() {
+            if (!this.game_over() && this.game.isRunning) {
+                this.currentBlock.move(1, 0, 0);
+            }
+            this.draw();
+        }
+
+        rotate_clockwise() {
+            if (!this.game_over() && this.game.isRunning) {
+                this.currentBlock.move(0, 0, 1);
+            }
+            this.draw();
+        }
+
+        rotate_counter_clockwise() {
+            if (!this.game_over() && this.game.isRunning) {
+                this.currentBlock.move(0, 0, -1);
+            }
+            this.draw();
         }
 
         storeCurrent() {
@@ -218,17 +267,26 @@ module Game {
             this.root = new Graphics.TetrisRoot();
             this.ticker = new Graphics.TetrisTimer();
             this.canvas = new Graphics.TetrisCanvas();
-            this.rect = new Graphics.TetrisRect(this.canvas, 2, 2, 25, 25, "red");
             this.ticker.setCallback(this);
             this.board = new Board(this);
             this.isRunning = true;
             //createjs.Ticker.addListener(this);
             //createjs.Ticker.addEventListener("tick", this.tick);
+            this.keyBindings();
         }
         
+        keyBindings() {
+
+            var self = this;
+
+            this.root.bind(37, function () { self.board.move_left; })
+            this.root.bind(39, function () { self.board.move_right; })
+            this.root.bind(38, function () { self.board.rotate_clockwise; })
+            this.root.bind(40, function () { self.board.rotate_counter_clockwise; })
+        }
+
         tick() {
             if (this.isRunning) {
-                //this.rect.move(0, 3);
                 this.board.run();
             }
         }
@@ -254,8 +312,8 @@ module Game {
                 results.push(new Graphics.TetrisRect(this.canvas, 
                                     start[0] * size + block[0]*size + 3,
                                     start[1] * size + block[1]*size,
-                                    start[0] * size + size + block[0]*size + 3,
-                                    start[1] * size + size + block[1]*size,
+                                    50,
+                                    50,
                                     piece.color));
             }
 
