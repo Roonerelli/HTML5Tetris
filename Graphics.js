@@ -8,20 +8,13 @@ var Graphics;
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
 
-                console.log('key pressed. ');
-                console.log(TetrisRoot.keyBindings);
                 var closur = TetrisRoot.keyBindings['' + keycode];
 
                 closur();
-
-                if (keycode === 37) {
-                    alert("Hi");
-                }
             };
         }
         TetrisRoot.prototype.bind = function (char, callback) {
             TetrisRoot.keyBindings[char] = callback;
-            console.log(TetrisRoot.keyBindings);
         };
         TetrisRoot.keyBindings = {};
         return TetrisRoot;
@@ -35,8 +28,8 @@ var Graphics;
             createjs.Ticker.useRAF = true;
         }
         TetrisTimer.pause = function () {
-            var paused = !createjs.Ticker.getPaused();
-            createjs.Ticker.setPaused(paused);
+            var isPaused = !createjs.Ticker.getPaused();
+            createjs.Ticker.setPaused(isPaused);
         };
 
         TetrisTimer.prototype.setCallback = function (callback) {
@@ -197,6 +190,7 @@ var Game;
         Board.prototype.move_left = function () {
             if (!this.game_over() && this.game.isRunning) {
                 this.currentBlock.move(-1, 0, 0);
+                console.log('move left');
             }
             this.draw();
         };
@@ -204,6 +198,7 @@ var Game;
         Board.prototype.move_right = function () {
             if (!this.game_over() && this.game.isRunning) {
                 this.currentBlock.move(1, 0, 0);
+                console.log('move right');
             }
             this.draw();
         };
@@ -247,16 +242,16 @@ var Game;
             var self = this;
 
             this.root.bind(37, function () {
-                self.board.move_left;
+                self.board.move_left();
             });
             this.root.bind(39, function () {
-                self.board.move_right;
+                self.board.move_right();
             });
             this.root.bind(38, function () {
-                self.board.rotate_clockwise;
+                self.board.rotate_clockwise();
             });
             this.root.bind(40, function () {
-                self.board.rotate_counter_clockwise;
+                self.board.rotate_counter_clockwise();
             });
         };
 
