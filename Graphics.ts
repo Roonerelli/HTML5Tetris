@@ -193,10 +193,6 @@ module Game {
             return false;
             //this.grid[1]      
         }
-    
-        emptyAt (point) {
-
-        }
 
         run() {
             var ran = this.currentBlock.dropByOne();
@@ -240,6 +236,37 @@ module Game {
         }
 
         storeCurrent() {
+            var locations = this.currentBlock.current_rotation();
+            var displacements = this.currentBlock.base_position
+
+            for (var i = 0; i < 4; i++) {
+                var current = locations[i];
+                this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
+            }
+            this.removeFilled();
+        }
+
+        emptyAt(point) {
+
+        }
+
+        removeFilled() {
+            for (var i = 2; i < this.grid.length; i++) {
+                var row = this.grid.slice(i);
+
+                if (this.grid[i].all) {
+                    for (var j = 0; j < this.numColumns; j++) {
+                        this.grid[i][j].remove();
+                        this.grid[i][j] = null;
+                    }
+
+                    for (var k = this.grid.size - i + 1; k <= this.grid.length; k++) {
+
+                        
+                        //this.grid[this.grid.length - k]
+                    }
+                }
+            }
         }
 
         draw() {
