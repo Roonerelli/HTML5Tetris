@@ -1,4 +1,8 @@
+/// <reference path="underscore.d.ts" />
+
+
 var createjs;
+var _;
 
 module Graphics {
 
@@ -13,7 +17,9 @@ module Graphics {
 
                 var closur = TetrisRoot.keyBindings['' + keycode];
 
-                closur();
+                if (closur != undefined) {
+                    closur();
+                }
             }
         }
 
@@ -130,13 +136,12 @@ module Game {
 
             for (var index = 0; index < potential.length; ++index) {
                 var posns = potential[index];
-                if(this.board.emptyAt([
+                if(!this.board.emptyAt([
                     posns[0] + deltaX + this.base_position[0], 
                     posns[1] + deltaY + this.base_position[1]])) {
                     this.moved = false;
                 }
             }
-
 
             if (this.moved) {
                 this.base_position[0] += deltaX;
@@ -152,6 +157,8 @@ module Game {
         }
         
         static next_piece(board: Board) {
+            console.log('add new piece');
+            console.log(this.All_Pieces[0]);
             return new Piece(this.All_Pieces[0], board);
         }
 
@@ -173,7 +180,6 @@ module Game {
         numColumns = 10;
         numRows = 27;
         current_pos: any;
-
         
         constructor(game: Tetris) {
             //this.grid = _.map(_.range(this.numRows), function(){return _.range(this.numColumns)});
@@ -186,7 +192,6 @@ module Game {
 
             this.currentBlock = Piece.next_piece(this);
             this.game = game;
-        
         }
 
         game_over() {
@@ -196,10 +201,17 @@ module Game {
 
         run() {
             var ran = this.currentBlock.dropByOne();
+            console.log(ran);                
 
             if (!ran) {
-                //this.storeCurrent();
-            
+                this.storeCurrent();
+                console.log('stored piece.')
+
+                if (!this.game_over()) {
+                    console.log('getting next piece')
+
+                    this.next_piece();                    
+                }
             }
 
             this.draw();
@@ -208,7 +220,6 @@ module Game {
         move_left() {
             if (!this.game_over() && this.game.isRunning) {
                 this.currentBlock.move(-1, 0, 0);
-                console.log('move left');
             }
             this.draw();
         }
@@ -216,7 +227,6 @@ module Game {
         move_right() {
             if (!this.game_over() && this.game.isRunning) {
                 this.currentBlock.move(1, 0, 0);
-                console.log('move right');
             }
             this.draw();
         }
@@ -235,6 +245,11 @@ module Game {
             this.draw();
         }
 
+        next_piece() {
+            this.currentBlock = Piece.next_piece(this);
+            this.current_pos = null;
+        }
+
         storeCurrent() {
             var locations = this.currentBlock.current_rotation();
             var displacements = this.currentBlock.base_position
@@ -243,18 +258,28 @@ module Game {
                 var current = locations[i];
                 this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
             }
-            this.removeFilled();
+            //this.removeFilled();
         }
 
         emptyAt(point) {
+            if (!(point[0] >= 0 && point[0] < this.numColumns)) {
+                return false;
+            }
+            else if (point[1] < 1) {
+                return true;
+            }
+            else if (point[1] >= this.numRows) {
+                return false;
+            }
 
+            return this.grid[point[1]][point[0]] == null;
         }
 
         removeFilled() {
             for (var i = 2; i < this.grid.length; i++) {
                 var row = this.grid.slice(i);
 
-                if (this.grid[i].all) {
+                if (_.every(this.grid[i])) {
                     for (var j = 0; j < this.numColumns; j++) {
                         this.grid[i][j].remove();
                         this.grid[i][j] = null;
@@ -265,6 +290,9 @@ module Game {
                         
                         //this.grid[this.grid.length - k]
                     }
+
+                    this.grid[0] =  new Array(this.numColumns);
+                    this.score += 10;
                 }
             }
         }
@@ -291,8 +319,6 @@ module Game {
             this.ticker.setCallback(this);
             this.board = new Board(this);
             this.isRunning = true;
-            //createjs.Ticker.addListener(this);
-            //createjs.Ticker.addEventListener("tick", this.tick);
             this.keyBindings();
         }
         
@@ -333,8 +359,8 @@ module Game {
                 results.push(new Graphics.TetrisRect(this.canvas, 
                                     start[0] * size + block[0]*size + 3,
                                     start[1] * size + block[1]*size,
-                                    50,
-                                    50,
+                                    15,
+                                    15,
                                     piece.color));
             }
 
