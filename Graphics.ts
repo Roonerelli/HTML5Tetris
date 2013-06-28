@@ -114,8 +114,7 @@ module Game {
             this.all_rotations = pointArray;
             this.rotation_index = 0; //TODO:randomize
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
-            
-            this.color = Piece.AllColors[indx]; // "Red"; //TODO: get random from All Colors array
+            this.color = Piece.AllColors[indx]; 
             this.base_position = [5, 0];
             this.board = board;
             this.moved = true;
@@ -255,6 +254,27 @@ module Game {
             this.draw();
         }
 
+        drop_all_the_way() {
+            if (this.game.isRunning) {
+                var ran = this.currentBlock.dropByOne();
+
+                while (ran) {
+                    _.each(this.current_pos, function (block) { block.remove; })
+                    this.score += 1;
+                    ran = this.currentBlock.dropByOne();
+                }
+                this.draw();
+                this.storeCurrent();
+                if (!this.game_over()) {
+                    this.next_piece();
+                }
+
+                //this.game.updateScore();
+
+                this.draw();
+            }
+        }
+
         next_piece() {
             this.currentBlock = Piece.next_piece(this);
             this.current_pos = null;
@@ -340,6 +360,8 @@ module Game {
             this.root.bind(39, function () { self.board.move_right(); })
             this.root.bind(38, function () { self.board.rotate_clockwise(); })
             this.root.bind(40, function () { self.board.rotate_counter_clockwise(); })
+            
+            this.root.bind(32, function () { self.board.drop_all_the_way(); })
         }
 
         tick() {
