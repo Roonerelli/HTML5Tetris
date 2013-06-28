@@ -152,9 +152,9 @@ module Game {
         }
 
         static rotations (point_array) {
-            var rotate1 = _.map(point_array, function(x, y) { return [-y, x]; })
-            var rotate2 = _.map(point_array, function(x, y) { return [-x, y]; })
-            var rotate3 = _.map(point_array, function (x, y) { return [y, -x]; })
+            var rotate1 = _.map(point_array, function(point) { return [-point[1], point[0]]; })
+            var rotate2 = _.map(point_array, function(point) { return [-point[0], point[1]]; })
+            var rotate3 = _.map(point_array, function (point) { return [point[1], -point[0]]; })
 
             return [point_array, rotate1, rotate2, rotate3];
         }
@@ -173,8 +173,7 @@ module Game {
             Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]),
             Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])];
 
-        static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 
-               'Orange', 'Green'];
+        static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 'Orange', 'Green'];
     }
 
     export class Board {
@@ -360,14 +359,14 @@ module Game {
         
         keyBindings() {
 
-            var self = this;
+            var _this = this;
 
-            this.root.bind(37, function () { self.board.move_left(); })
-            this.root.bind(39, function () { self.board.move_right(); })
-            this.root.bind(38, function () { self.board.rotate_clockwise(); })
-            this.root.bind(40, function () { self.board.rotate_counter_clockwise(); })
+            this.root.bind(37, function () { _this.board.move_left(); })
+            this.root.bind(39, function () { _this.board.move_right(); })
+            this.root.bind(38, function () { _this.board.rotate_clockwise(); })
+            this.root.bind(40, function () { _this.board.rotate_counter_clockwise(); })
             
-            this.root.bind(32, function () { self.board.drop_all_the_way(); })
+            this.root.bind(32, function () { _this.board.drop_all_the_way(); })
         }
 
         tick() {
