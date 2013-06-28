@@ -1,5 +1,3 @@
-/// <reference path="underscore.d.ts" />
-
 
 var createjs;
 var _;
@@ -153,16 +151,26 @@ module Game {
         }
 
         static rotations (point_array) {
+            var rotate1 = _.map(point_array, function(x, y) { return [-y, x]; })
+            var rotate2 = _.map(point_array, function(x, y) { return [-x, y]; })
+            var rotate3 = _.map(point_array, function (x, y) { return [y, -x]; })
 
+            return [point_array, rotate1, rotate2, rotate3];
         }
         
-        static next_piece(board: Board) {
-            console.log('add new piece');
-            console.log(this.All_Pieces[0]);
-            return new Piece(this.All_Pieces[0], board);
+        static next_piece(board: Board) {            
+            var indx = Math.floor(Math.random() * this.All_Pieces.length);
+            return new Piece(this.All_Pieces[indx], board);
         }
 
-        static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]]];
+        static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]],
+            Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]),
+            [[[0, 0], [-1, 0], [1, 0], [2, 0]],
+                [[0, 0], [0, -1], [0, 1], [0, 2]]],
+            Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]),
+            Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]),
+            Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]),
+            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])];
 
         static AllColors = ['DarkGreen', 'dark blue', 'dark red', 'gold2', 'Purple3', 
                'OrangeRed2', 'LightSkyBlue'];
