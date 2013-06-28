@@ -173,8 +173,8 @@ module Game {
             Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]),
             Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])];
 
-        static AllColors = ['DarkGreen', 'dark blue', 'dark red', 'gold2', 'Purple3', 
-               'OrangeRed2', 'LightSkyBlue'];
+        static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 
+               'Orange', 'Green'];
     }
 
     export class Board {
@@ -259,7 +259,13 @@ module Game {
                 var ran = this.currentBlock.dropByOne();
 
                 while (ran) {
-                    _.each(this.current_pos, function (block) { block.remove; })
+
+                    for (var i = 0; i < this.current_pos.length; i++) {
+                        var block = this.current_pos[i];
+                        block.remove();
+                    }
+
+                    //_.each(this.current_pos, function (block) { block.remove; })
                     this.score += 1;
                     ran = this.currentBlock.dropByOne();
                 }
@@ -391,9 +397,7 @@ module Game {
                 results.push(new Graphics.TetrisRect(this.canvas, 
                                     start[0] * size + block[0]*size + 3,
                                     start[1] * size + block[1]*size,
-                                    15,
-                                    15,
-                                    piece.color));
+                                    15, 15, piece.color));
             }
 
             return results;
