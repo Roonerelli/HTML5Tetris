@@ -99,7 +99,9 @@ var Game;
             this.moved = true;
             this.all_rotations = pointArray;
             this.rotation_index = 0;
-            this.color = "Red";
+            var indx = Math.floor(Math.random() * Piece.AllColors.length);
+
+            this.color = Piece.AllColors[indx];
             this.base_position = [5, 0];
             this.board = board;
             this.moved = true;

@@ -113,7 +113,9 @@ module Game {
         constructor(pointArray, board : Board) {
             this.all_rotations = pointArray;
             this.rotation_index = 0; //TODO:randomize
-            this.color = "Red"; //TODO: get random from All Colors array
+            var indx = Math.floor(Math.random() * Piece.AllColors.length);
+            
+            this.color = Piece.AllColors[indx]; // "Red"; //TODO: get random from All Colors array
             this.base_position = [5, 0];
             this.board = board;
             this.moved = true;
