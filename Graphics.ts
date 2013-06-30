@@ -80,8 +80,15 @@ module Graphics {
         private canvas : TetrisCanvas;
 
         constructor(canvas: TetrisCanvas, x, y, w, h, color) {
+            //this.rect = new createjs.Shape();
+            //this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
+
             this.rect = new createjs.Shape();
+            this.rect.graphics.beginStroke("#000");
+            this.rect.graphics.setStrokeStyle(1);
+            this.rect.snapToPixel = true;
             this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
+
             this.canvas = canvas;
             this.canvas.addChild(this.rect);
             this.canvas.update();
@@ -184,7 +191,7 @@ module Game {
         game: Tetris;
         delay = 500;
 
-        blockSize = 15;
+        blockSize = 25;
         numColumns = 10;
         numRows = 27;
         current_pos: any;
@@ -293,6 +300,7 @@ module Game {
                 var current = locations[i];
                 this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
             }
+            
             //this.removeFilled();
         }
 
@@ -322,8 +330,14 @@ module Game {
 
                     for (var k = this.grid.size - i + 1; k <= this.grid.length; k++) {
 
-                        
-                        //this.grid[this.grid.length - k]
+                        var rects = this.grid[this.grid.length - k];
+
+                        for(var l = 0; l < rects.length; i++) {
+                            var rect  = rects[l];
+                            if (rect) {
+                                rect.move(0, this.blockSize);
+                            }
+                        }
                     }
 
                     this.grid[0] =  new Array(this.numColumns);
@@ -396,7 +410,7 @@ module Game {
                 results.push(new Graphics.TetrisRect(this.canvas, 
                                     start[0] * size + block[0]*size + 3,
                                     start[1] * size + block[1]*size,
-                                    15, 15, piece.color));
+                                    this.board.blockSize, this.board.blockSize, piece.color));
             }
 
             return results;

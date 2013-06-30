@@ -62,6 +62,9 @@ var Graphics;
     var TetrisRect = (function () {
         function TetrisRect(canvas, x, y, w, h, color) {
             this.rect = new createjs.Shape();
+            this.rect.graphics.beginStroke("#000");
+            this.rect.graphics.setStrokeStyle(1);
+            this.rect.snapToPixel = true;
             this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
             this.canvas = canvas;
             this.canvas.addChild(this.rect);
@@ -320,7 +323,7 @@ var Game;
         function Board(game) {
             this.score = 0;
             this.delay = 500;
-            this.blockSize = 15;
+            this.blockSize = 25;
             this.numColumns = 10;
             this.numRows = 27;
             this.grid = new Array(this.numRows);
@@ -400,6 +403,7 @@ var Game;
                 var current = locations[i];
                 this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
             }
+            this.removeFilled();
         };
         Board.prototype.emptyAt = function (point) {
             if(!(point[0] >= 0 && point[0] < this.numColumns)) {
@@ -414,12 +418,21 @@ var Game;
         Board.prototype.removeFilled = function () {
             for(var i = 2; i < this.grid.length; i++) {
                 var row = this.grid.slice(i);
-                if(_.every(this.grid[i])) {
+                if(_.every(this.grid[i], function (x) {
+                    x != undefined;
+                })) {
                     for(var j = 0; j < this.numColumns; j++) {
                         this.grid[i][j].remove();
                         this.grid[i][j] = null;
                     }
                     for(var k = this.grid.size - i + 1; k <= this.grid.length; k++) {
+                        var rects = this.grid[this.grid.length - k];
+                        for(var l = 0; l < rects.length; i++) {
+                            var rect = rects[l];
+                            if(rect) {
+                                rect.move(0, this.blockSize);
+                            }
+                        }
                     }
                     this.grid[0] = new Array(this.numColumns);
                     this.score += 10;
@@ -443,21 +456,21 @@ var Game;
             this.keyBindings();
         }
         Tetris.prototype.keyBindings = function () {
-            var self = this;
+            var _this = this;
             this.root.bind(37, function () {
-                self.board.move_left();
+                _this.board.move_left();
             });
             this.root.bind(39, function () {
-                self.board.move_right();
+                _this.board.move_right();
             });
             this.root.bind(38, function () {
-                self.board.rotate_clockwise();
+                _this.board.rotate_clockwise();
             });
             this.root.bind(40, function () {
-                self.board.rotate_counter_clockwise();
+                _this.board.rotate_counter_clockwise();
             });
             this.root.bind(32, function () {
-                self.board.drop_all_the_way();
+                _this.board.drop_all_the_way();
             });
         };
         Tetris.prototype.tick = function () {
@@ -478,7 +491,7 @@ var Game;
             var results = [];
             for(var i = 0; i < blocks.length; i++) {
                 var block = blocks[i];
-                results.push(new Graphics.TetrisRect(this.canvas, start[0] * size + block[0] * size + 3, start[1] * size + block[1] * size, 15, 15, piece.color));
+                results.push(new Graphics.TetrisRect(this.canvas, start[0] * size + block[0] * size + 3, start[1] * size + block[1] * size, this.board.blockSize, this.board.blockSize, piece.color));
             }
             return results;
         };
