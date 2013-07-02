@@ -216,7 +216,6 @@ module Game {
 
         run() {
             var ran = this.currentBlock.dropByOne();
-            console.log(ran);                
 
             if (!ran) {
                 this.storeCurrent();
@@ -301,7 +300,7 @@ module Game {
                 this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
             }
             
-            //this.removeFilled();
+            this.removeFilled();
         }
 
         emptyAt(point) {
@@ -322,7 +321,18 @@ module Game {
             for (var i = 2; i < this.grid.length; i++) {
                 var row = this.grid.slice(i);
 
-                if (_.every(this.grid[i])) {
+                var allFull = true;
+
+                for (var g = 0; g < this.grid[i].length; g++ ) {
+                    if (this.grid[i][g] == undefined) {
+                        allFull = false;
+                        break;
+                    }
+                }
+
+                //TODO: why is _.every not working?
+                //if (_.every(this.grid[i], function(x) {console.log(x); return x != undefined })) {
+                if (allFull) {
                     for (var j = 0; j < this.numColumns; j++) {
                         this.grid[i][j].remove();
                         this.grid[i][j] = null;

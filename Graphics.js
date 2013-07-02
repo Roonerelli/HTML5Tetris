@@ -338,7 +338,6 @@ var Game;
         };
         Board.prototype.run = function () {
             var ran = this.currentBlock.dropByOne();
-            console.log(ran);
             if(!ran) {
                 this.storeCurrent();
                 console.log('stored piece.');
@@ -418,9 +417,14 @@ var Game;
         Board.prototype.removeFilled = function () {
             for(var i = 2; i < this.grid.length; i++) {
                 var row = this.grid.slice(i);
-                if(_.every(this.grid[i], function (x) {
-                    x != undefined;
-                })) {
+                var allFull = true;
+                for(var g = 0; g < this.grid[i].length; g++) {
+                    if(this.grid[i][g] == undefined) {
+                        allFull = false;
+                        break;
+                    }
+                }
+                if(allFull) {
                     for(var j = 0; j < this.numColumns; j++) {
                         this.grid[i][j].remove();
                         this.grid[i][j] = null;
