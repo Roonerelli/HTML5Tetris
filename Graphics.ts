@@ -171,14 +171,18 @@ module Game {
             return new Piece(this.All_Pieces[indx], board);
         }
 
-        static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]],
-            Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]),
-            [[[0, 0], [-1, 0], [1, 0], [2, 0]],
+        static All_Pieces = [[[[0, 0], [-1, 0], [1, 0], [2, 0]],
+                [[0, 0], [0, -1], [0, 1], [0, 2]]]];
+        
+
+        /*static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]], //# square (only needs one)
+            Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), // T
+            [[[0, 0], [-1, 0], [1, 0], [2, 0]],     // long
                 [[0, 0], [0, -1], [0, 1], [0, 2]]],
-            Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]),
-            Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]),
-            Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]),
-            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])];
+            Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), // L
+            Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), // inverted L
+            Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), // S
+            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])]; // Z*/
 
         static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 'Orange', 'Green'];
     }
@@ -338,13 +342,14 @@ module Game {
                         this.grid[i][j] = null;
                     }
 
-                    for (var k = this.grid.size - i + 1; k <= this.grid.length; k++) {
+                    for (var k = this.grid.length - i + 1; k <= this.grid.length; k++) {
 
                         var rects = this.grid[this.grid.length - k];
 
-                        for(var l = 0; l < rects.length; i++) {
+                        for(var l = 0; l < rects.length; l++) {
                             var rect  = rects[l];
                             if (rect) {
+                                console.log('moving rect');
                                 rect.move(0, this.blockSize);
                             }
                         }

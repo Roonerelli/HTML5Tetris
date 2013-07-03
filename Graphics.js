@@ -165,44 +165,6 @@ var Game;
                         0
                     ], 
                     [
-                        1, 
-                        0
-                    ], 
-                    [
-                        0, 
-                        1
-                    ], 
-                    [
-                        1, 
-                        1
-                    ]
-                ]
-            ], 
-            Piece.rotations([
-                [
-                    0, 
-                    0
-                ], 
-                [
-                    -1, 
-                    0
-                ], 
-                [
-                    1, 
-                    0
-                ], 
-                [
-                    0, 
-                    -1
-                ]
-            ]), 
-            [
-                [
-                    [
-                        0, 
-                        0
-                    ], 
-                    [
                         -1, 
                         0
                     ], 
@@ -233,79 +195,7 @@ var Game;
                         2
                     ]
                 ]
-            ], 
-            Piece.rotations([
-                [
-                    0, 
-                    0
-                ], 
-                [
-                    0, 
-                    -1
-                ], 
-                [
-                    0, 
-                    1
-                ], 
-                [
-                    1, 
-                    1
-                ]
-            ]), 
-            Piece.rotations([
-                [
-                    0, 
-                    0
-                ], 
-                [
-                    0, 
-                    -1
-                ], 
-                [
-                    0, 
-                    1
-                ], 
-                [
-                    -1, 
-                    1
-                ]
-            ]), 
-            Piece.rotations([
-                [
-                    0, 
-                    0
-                ], 
-                [
-                    -1, 
-                    0
-                ], 
-                [
-                    0, 
-                    -1
-                ], 
-                [
-                    1, 
-                    -1
-                ]
-            ]), 
-            Piece.rotations([
-                [
-                    0, 
-                    0
-                ], 
-                [
-                    1, 
-                    0
-                ], 
-                [
-                    0, 
-                    -1
-                ], 
-                [
-                    -1, 
-                    -1
-                ]
-            ])
+            ]
         ];
         Piece.AllColors = [
             'Aqua', 
@@ -429,11 +319,12 @@ var Game;
                         this.grid[i][j].remove();
                         this.grid[i][j] = null;
                     }
-                    for(var k = this.grid.size - i + 1; k <= this.grid.length; k++) {
+                    for(var k = this.grid.length - i + 1; k <= this.grid.length; k++) {
                         var rects = this.grid[this.grid.length - k];
-                        for(var l = 0; l < rects.length; i++) {
+                        for(var l = 0; l < rects.length; l++) {
                             var rect = rects[l];
                             if(rect) {
+                                console.log('moving rect');
                                 rect.move(0, this.blockSize);
                             }
                         }
