@@ -165,6 +165,44 @@ var Game;
                         0
                     ], 
                     [
+                        1, 
+                        0
+                    ], 
+                    [
+                        0, 
+                        1
+                    ], 
+                    [
+                        1, 
+                        1
+                    ]
+                ]
+            ], 
+            Piece.rotations([
+                [
+                    0, 
+                    0
+                ], 
+                [
+                    -1, 
+                    0
+                ], 
+                [
+                    1, 
+                    0
+                ], 
+                [
+                    0, 
+                    -1
+                ]
+            ]), 
+            [
+                [
+                    [
+                        0, 
+                        0
+                    ], 
+                    [
                         -1, 
                         0
                     ], 
@@ -195,7 +233,79 @@ var Game;
                         2
                     ]
                 ]
-            ]
+            ], 
+            Piece.rotations([
+                [
+                    0, 
+                    0
+                ], 
+                [
+                    0, 
+                    -1
+                ], 
+                [
+                    0, 
+                    1
+                ], 
+                [
+                    1, 
+                    1
+                ]
+            ]), 
+            Piece.rotations([
+                [
+                    0, 
+                    0
+                ], 
+                [
+                    0, 
+                    -1
+                ], 
+                [
+                    0, 
+                    1
+                ], 
+                [
+                    -1, 
+                    1
+                ]
+            ]), 
+            Piece.rotations([
+                [
+                    0, 
+                    0
+                ], 
+                [
+                    -1, 
+                    0
+                ], 
+                [
+                    0, 
+                    -1
+                ], 
+                [
+                    1, 
+                    -1
+                ]
+            ]), 
+            Piece.rotations([
+                [
+                    0, 
+                    0
+                ], 
+                [
+                    1, 
+                    0
+                ], 
+                [
+                    0, 
+                    -1
+                ], 
+                [
+                    -1, 
+                    -1
+                ]
+            ])
         ];
         Piece.AllColors = [
             'Aqua', 
@@ -324,7 +434,6 @@ var Game;
                         for(var l = 0; l < rects.length; l++) {
                             var rect = rects[l];
                             if(rect) {
-                                console.log('moving rect');
                                 rect.move(0, this.blockSize);
                             }
                         }

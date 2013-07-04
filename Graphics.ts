@@ -171,18 +171,18 @@ module Game {
             return new Piece(this.All_Pieces[indx], board);
         }
 
-        static All_Pieces = [[[[0, 0], [-1, 0], [1, 0], [2, 0]],
-                [[0, 0], [0, -1], [0, 1], [0, 2]]]];
+        /*static All_Pieces = [[[[0, 0], [-1, 0], [1, 0], [2, 0]],
+                [[0, 0], [0, -1], [0, 1], [0, 2]]]];*/
         
 
-        /*static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]], //# square (only needs one)
+        static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]], //# square (only needs one)
             Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), // T
             [[[0, 0], [-1, 0], [1, 0], [2, 0]],     // long
                 [[0, 0], [0, -1], [0, 1], [0, 2]]],
             Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), // L
             Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), // inverted L
             Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), // S
-            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])]; // Z*/
+            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])]; // Z
 
         static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 'Orange', 'Green'];
     }
@@ -349,10 +349,11 @@ module Game {
                         for(var l = 0; l < rects.length; l++) {
                             var rect  = rects[l];
                             if (rect) {
-                                console.log('moving rect');
                                 rect.move(0, this.blockSize);
                             }
                         }
+
+                        //this.grid[this.grid.length - k + 1] = new Array(this.grid[this.grid.length - k]);
                     }
 
                     this.grid[0] =  new Array(this.numColumns);
@@ -388,14 +389,12 @@ module Game {
         
         keyBindings() {
 
-            var _this = this;
-
-            this.root.bind(37, function () { _this.board.move_left(); })
-            this.root.bind(39, function () { _this.board.move_right(); })
-            this.root.bind(38, function () { _this.board.rotate_clockwise(); })
-            this.root.bind(40, function () { _this.board.rotate_counter_clockwise(); })
+            this.root.bind(37, () => { this.board.move_left(); })
+            this.root.bind(39, () =>  { this.board.move_right(); })
+            this.root.bind(38, () =>  { this.board.rotate_clockwise(); })
+            this.root.bind(40, () =>  { this.board.rotate_counter_clockwise(); })
             
-            this.root.bind(32, function () { _this.board.drop_all_the_way(); })
+            this.root.bind(32, () => { this.board.drop_all_the_way(); })
         }
 
         tick() {
