@@ -66,10 +66,7 @@ module Graphics {
         update() {
             this.stage.update();
         }
-
-        unplace() {
-        }
-
+        
         remove() {
         }
     }
@@ -80,9 +77,7 @@ module Graphics {
         private canvas : TetrisCanvas;
 
         constructor(canvas: TetrisCanvas, x, y, w, h, color) {
-            //this.rect = new createjs.Shape();
-            //this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
-
+            
             this.rect = new createjs.Shape();
             this.rect.graphics.beginStroke("#000");
             this.rect.graphics.setStrokeStyle(1);
@@ -159,9 +154,9 @@ module Game {
         }
 
         static rotations (point_array) {
-            var rotate1 = _.map(point_array, function(point) { return [-point[1], point[0]]; })
-            var rotate2 = _.map(point_array, function(point) { return [-point[0], point[1]]; })
-            var rotate3 = _.map(point_array, function (point) { return [point[1], -point[0]]; })
+            var rotate1 = _.map(point_array, (point) => { return [-point[1], point[0]]; })
+            var rotate2 = _.map(point_array, (point) => { return [-point[0], point[1]]; })
+            var rotate3 = _.map(point_array, (point) => { return [point[1], -point[0]]; })
 
             return [point_array, rotate1, rotate2, rotate3];
         }
@@ -339,7 +334,7 @@ module Game {
                         this.grid[i][j] = undefined;
                     }
 
-                    for (var k = this.grid.length - i + 1; k < this.grid.length; k++) {
+                    for (var k = this.grid.length - i + 1; k <= this.grid.length; k++) {
 
                         var rects = this.grid[this.grid.length - k];
 
@@ -349,6 +344,8 @@ module Game {
                                 rect.move(0, this.blockSize);
                             }
                         }
+
+                        this.grid[this.grid.length - k + 1] = new Array(10);
 
                         //this.grid[this.grid.length - k + 1] = new Array(this.grid[this.grid.length - k]);
                     }

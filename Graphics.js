@@ -52,8 +52,6 @@ var Graphics;
         TetrisCanvas.prototype.update = function () {
             this.stage.update();
         };
-        TetrisCanvas.prototype.unplace = function () {
-        };
         TetrisCanvas.prototype.remove = function () {
         };
         return TetrisCanvas;
@@ -427,7 +425,7 @@ var Game;
                         this.grid[i][j].remove();
                         this.grid[i][j] = undefined;
                     }
-                    for(var k = this.grid.length - i + 1; k < this.grid.length; k++) {
+                    for(var k = this.grid.length - i + 1; k <= this.grid.length; k++) {
                         var rects = this.grid[this.grid.length - k];
                         for(var l = 0; l < rects.length; l++) {
                             var rect = rects[l];
@@ -435,6 +433,7 @@ var Game;
                                 rect.move(0, this.blockSize);
                             }
                         }
+                        this.grid[this.grid.length - k + 1] = new Array(10);
                     }
                     this.grid[0] = new Array(this.numColumns);
                     this.score += 10;
