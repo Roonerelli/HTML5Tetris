@@ -7,16 +7,16 @@ var Graphics;
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
-                var closur = TetrisRoot.keyBindings['' + keycode];
-                if(closur != undefined) {
-                    closur();
+                var action = TetrisRoot.keyBindings['' + keycode];
+                if(action != undefined) {
+                    action();
                 }
             };
         }
         TetrisRoot.keyBindings = {
         };
-        TetrisRoot.prototype.bind = function (char, callback) {
-            TetrisRoot.keyBindings[char] = callback;
+        TetrisRoot.prototype.bind = function (char, action) {
+            TetrisRoot.keyBindings[char] = action;
         };
         return TetrisRoot;
     })();
@@ -340,9 +340,7 @@ var Game;
             var ran = this.currentBlock.dropByOne();
             if(!ran) {
                 this.storeCurrent();
-                console.log('stored piece.');
                 if(!this.game_over()) {
-                    console.log('getting next piece');
                     this.next_piece();
                 }
             }
@@ -427,9 +425,9 @@ var Game;
                 if(allFull) {
                     for(var j = 0; j < this.numColumns; j++) {
                         this.grid[i][j].remove();
-                        this.grid[i][j] = null;
+                        this.grid[i][j] = undefined;
                     }
-                    for(var k = this.grid.length - i + 1; k <= this.grid.length; k++) {
+                    for(var k = this.grid.length - i + 1; k < this.grid.length; k++) {
                         var rects = this.grid[this.grid.length - k];
                         for(var l = 0; l < rects.length; l++) {
                             var rect = rects[l];

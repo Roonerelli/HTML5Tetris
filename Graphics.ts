@@ -13,16 +13,16 @@ module Graphics {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
 
-                var closur = TetrisRoot.keyBindings['' + keycode];
+                var action = TetrisRoot.keyBindings['' + keycode];
 
-                if (closur != undefined) {
-                    closur();
+                if (action != undefined) {
+                    action();
                 }
             }
         }
 
-        bind(char, callback) {
-            TetrisRoot.keyBindings[char] = callback;
+        bind(char, action) {
+            TetrisRoot.keyBindings[char] = action;
         }
     }
 
@@ -223,11 +223,8 @@ module Game {
 
             if (!ran) {
                 this.storeCurrent();
-                console.log('stored piece.')
-
+                
                 if (!this.game_over()) {
-                    console.log('getting next piece')
-
                     this.next_piece();                    
                 }
             }
@@ -339,10 +336,10 @@ module Game {
                 if (allFull) {
                     for (var j = 0; j < this.numColumns; j++) {
                         this.grid[i][j].remove();
-                        this.grid[i][j] = null;
+                        this.grid[i][j] = undefined;
                     }
 
-                    for (var k = this.grid.length - i + 1; k <= this.grid.length; k++) {
+                    for (var k = this.grid.length - i + 1; k < this.grid.length; k++) {
 
                         var rects = this.grid[this.grid.length - k];
 
@@ -390,9 +387,9 @@ module Game {
         keyBindings() {
 
             this.root.bind(37, () => { this.board.move_left(); })
-            this.root.bind(39, () =>  { this.board.move_right(); })
-            this.root.bind(38, () =>  { this.board.rotate_clockwise(); })
-            this.root.bind(40, () =>  { this.board.rotate_counter_clockwise(); })
+            this.root.bind(39, () => { this.board.move_right(); })
+            this.root.bind(38, () => { this.board.rotate_clockwise(); })
+            this.root.bind(40, () => { this.board.rotate_counter_clockwise(); })
             
             this.root.bind(32, () => { this.board.drop_all_the_way(); })
         }
