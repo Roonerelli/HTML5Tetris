@@ -433,7 +433,7 @@ var Game;
                                 rect.move(0, this.blockSize);
                             }
                         }
-                        this.grid[this.grid.length - k + 1] = new Array(10);
+                        this.grid[this.grid.length - k + 1] = this.grid[this.grid.length - k].slice();
                     }
                     this.grid[0] = new Array(this.numColumns);
                     this.score += 10;
