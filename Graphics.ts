@@ -98,6 +98,25 @@ module Graphics {
             this.canvas.removeChild(this.rect);
         }
     } 
+
+    export class TetrisLabel {
+
+        private text : string;
+
+        constructor() {
+
+        }
+
+        place(height, width, x, y) {
+
+        }
+
+        setText(text :string) {
+            this.text = text;
+        }
+
+    }
+
 }
 
 
@@ -224,6 +243,7 @@ module Game {
                 }
             }
 
+            this.game.updateScore();
             this.draw();
         }
 
@@ -276,7 +296,7 @@ module Game {
                     this.next_piece();
                 }
 
-                //this.game.updateScore();
+                this.game.updateScore();
 
                 this.draw();
             }
@@ -368,7 +388,6 @@ module Game {
         canvas: Graphics.TetrisCanvas;
         rect: Graphics.TetrisRect;
         board: Board;
-
         isRunning: bool;
 
         constructor() {
@@ -379,6 +398,10 @@ module Game {
             this.board = new Board(this);
             this.isRunning = true;
             this.keyBindings();
+        }
+
+        newGame() {
+
         }
         
         keyBindings() {
@@ -422,6 +445,10 @@ module Game {
             }
 
             return results;
+        }
+
+        updateScore() {
+
         }
     }
 }

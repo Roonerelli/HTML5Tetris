@@ -78,6 +78,17 @@ var Graphics;
         return TetrisRect;
     })();
     Graphics.TetrisRect = TetrisRect;    
+    var TetrisLabel = (function () {
+        function TetrisLabel() {
+        }
+        TetrisLabel.prototype.place = function (height, width, x, y) {
+        };
+        TetrisLabel.prototype.setText = function (text) {
+            this.text = text;
+        };
+        return TetrisLabel;
+    })();
+    Graphics.TetrisLabel = TetrisLabel;    
 })(Graphics || (Graphics = {}));
 var Game;
 (function (Game) {
@@ -342,6 +353,7 @@ var Game;
                     this.next_piece();
                 }
             }
+            this.game.updateScore();
             this.draw();
         };
         Board.prototype.move_left = function () {
@@ -384,6 +396,7 @@ var Game;
                 if(!this.game_over()) {
                     this.next_piece();
                 }
+                this.game.updateScore();
                 this.draw();
             }
         };
@@ -456,6 +469,8 @@ var Game;
             this.isRunning = true;
             this.keyBindings();
         }
+        Tetris.prototype.newGame = function () {
+        };
         Tetris.prototype.keyBindings = function () {
             var _this = this;
             this.root.bind(37, function () {
@@ -495,6 +510,8 @@ var Game;
                 results.push(new Graphics.TetrisRect(this.canvas, start[0] * size + block[0] * size + 3, start[1] * size + block[1] * size, this.board.blockSize, this.board.blockSize, piece.color));
             }
             return results;
+        };
+        Tetris.prototype.updateScore = function () {
         };
         return Tetris;
     })();
