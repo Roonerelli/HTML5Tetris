@@ -114,6 +114,13 @@ module Graphics {
             this.label.text = text;
         }
     }
+
+    export class TetrisButton {
+
+        constructor(canvas: TetrisCanvas, x, y, w, h, ) {
+            
+        }
+    }
 }
 
 

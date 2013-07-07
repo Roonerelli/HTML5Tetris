@@ -91,6 +91,12 @@ var Graphics;
         return TetrisLabel;
     })();
     Graphics.TetrisLabel = TetrisLabel;    
+    var TetrisButton = (function () {
+        function TetrisButton(canvas, x, y, w, h) {
+        }
+        return TetrisButton;
+    })();
+    Graphics.TetrisButton = TetrisButton;    
 })(Graphics || (Graphics = {}));
 var Game;
 (function (Game) {
