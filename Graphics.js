@@ -41,8 +41,6 @@ var Graphics;
         function TetrisCanvas() {
             this.stage = new createjs.Stage("tetris");
         }
-        TetrisCanvas.prototype.place = function (height, width, x, y) {
-        };
         TetrisCanvas.prototype.addChild = function (ele) {
             this.stage.addChild(ele);
         };
@@ -79,12 +77,16 @@ var Graphics;
     })();
     Graphics.TetrisRect = TetrisRect;    
     var TetrisLabel = (function () {
-        function TetrisLabel() {
+        function TetrisLabel(canvas, text, xPosn) {
+            this.font = "20px Arial";
+            this.colour = "#ff7700";
+            this.label = new createjs.Text(text, this.font, this.colour);
+            this.label.x = xPosn;
+            canvas.addChild(this.label);
+            canvas.update();
         }
-        TetrisLabel.prototype.place = function (height, width, x, y) {
-        };
         TetrisLabel.prototype.setText = function (text) {
-            this.text = text;
+            this.label.text = text;
         };
         return TetrisLabel;
     })();
@@ -468,6 +470,7 @@ var Game;
             this.board = new Board(this);
             this.isRunning = true;
             this.keyBindings();
+            this.controls();
         }
         Tetris.prototype.newGame = function () {
         };
@@ -488,6 +491,9 @@ var Game;
             this.root.bind(32, function () {
                 _this.board.drop_all_the_way();
             });
+        };
+        Tetris.prototype.controls = function () {
+            this.score = new Graphics.TetrisLabel(this.canvas, "0", 200);
         };
         Tetris.prototype.tick = function () {
             if(this.isRunning) {
@@ -512,6 +518,7 @@ var Game;
             return results;
         };
         Tetris.prototype.updateScore = function () {
+            this.score.setText(this.board.score.toString());
         };
         return Tetris;
     })();

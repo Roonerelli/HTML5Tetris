@@ -52,9 +52,6 @@ module Graphics {
             this.stage = new createjs.Stage("tetris");
         }
 
-        place(height, width, x, y) {
-        }
-
         addChild(ele: any) {
             this.stage.addChild(ele);
         }
@@ -101,22 +98,22 @@ module Graphics {
 
     export class TetrisLabel {
 
-        private text : string;
+        private label;
+        private font = "20px Arial";
+        private colour = "#ff7700";
 
-        constructor() {
+        constructor(canvas: TetrisCanvas, text: string, xPosn : number) {
 
-        }
-
-        place(height, width, x, y) {
-
+            this.label = new createjs.Text(text, this.font, this.colour);
+            this.label.x = xPosn;
+            canvas.addChild(this.label);
+            canvas.update();
         }
 
         setText(text :string) {
-            this.text = text;
+            this.label.text = text;
         }
-
     }
-
 }
 
 
@@ -389,6 +386,7 @@ module Game {
         rect: Graphics.TetrisRect;
         board: Board;
         isRunning: bool;
+        score : Graphics.TetrisLabel;
 
         constructor() {
             this.root = new Graphics.TetrisRoot();
@@ -398,6 +396,7 @@ module Game {
             this.board = new Board(this);
             this.isRunning = true;
             this.keyBindings();
+            this.controls();
         }
 
         newGame() {
@@ -412,6 +411,10 @@ module Game {
             this.root.bind(40, () => { this.board.rotate_counter_clockwise(); })
             
             this.root.bind(32, () => { this.board.drop_all_the_way(); })
+        }
+
+        controls() {
+            this.score = new Graphics.TetrisLabel(this.canvas, "0", 200);
         }
 
         tick() {
@@ -448,6 +451,7 @@ module Game {
         }
 
         updateScore() {
+            this.score.setText(this.board.score.toString());
 
         }
     }
