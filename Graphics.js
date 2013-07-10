@@ -22,9 +22,9 @@ var Graphics;
     })();
     Graphics.TetrisRoot = TetrisRoot;    
     var TetrisTimer = (function () {
-        function TetrisTimer() {
-            createjs.Ticker.setInterval(200);
-            createjs.Ticker.setFPS(2);
+        function TetrisTimer(interval, fps) {
+            createjs.Ticker.setInterval(interval);
+            createjs.Ticker.setFPS(fps);
             createjs.Ticker.useRAF = true;
         }
         TetrisTimer.pause = function pause() {
@@ -108,7 +108,8 @@ var Game;
             ];
             this.moved = true;
             this.all_rotations = pointArray;
-            this.rotation_index = 0;
+            var rotIndx = Math.floor(Math.random() * this.all_rotations.length);
+            this.rotation_index = rotIndx;
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx];
             this.base_position = [
@@ -477,7 +478,7 @@ var Game;
     var Tetris = (function () {
         function Tetris() {
             this.root = new Graphics.TetrisRoot();
-            this.ticker = new Graphics.TetrisTimer();
+            this.ticker = new Graphics.TetrisTimer(200, 2);
             this.canvas = new Graphics.TetrisCanvas();
             this.ticker.setCallback(this);
             this.board = new Board(this);

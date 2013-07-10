@@ -28,9 +28,9 @@ module Graphics {
 
     export class TetrisTimer {
 
-        constructor() {
-            createjs.Ticker.setInterval(200);
-            createjs.Ticker.setFPS(2);
+        constructor(interval: number, fps: number) {
+            createjs.Ticker.setInterval(interval);
+            createjs.Ticker.setFPS(fps);
             createjs.Ticker.useRAF = true;
         }
 
@@ -137,7 +137,8 @@ module Game {
         
         constructor(pointArray, board : Board) {
             this.all_rotations = pointArray;
-            this.rotation_index = 0; //TODO:randomize
+            var rotIndx = Math.floor(Math.random() * this.all_rotations.length);
+            this.rotation_index = rotIndx; //TODO:randomize
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx]; 
             this.base_position = [5, 0];
@@ -406,7 +407,7 @@ module Game {
 
         constructor() {
             this.root = new Graphics.TetrisRoot();
-            this.ticker = new Graphics.TetrisTimer();
+            this.ticker = new Graphics.TetrisTimer(200, 2);
             this.canvas = new Graphics.TetrisCanvas();
             this.ticker.setCallback(this);
             this.board = new Board(this);
