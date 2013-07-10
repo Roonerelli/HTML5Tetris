@@ -118,7 +118,7 @@ module Graphics {
     export class TetrisButton {
 
         constructor(canvas: TetrisCanvas, x, y, w, h, ) {
-            
+
         }
     }
 }
@@ -232,8 +232,17 @@ module Game {
         }
 
         game_over() {
-            return false;
-            //this.grid[1]      
+
+            var anyInTopRow = false;
+
+            for (var g = 0; g < this.grid[1].length; g++ ) {
+                if (this.grid[1][g] != undefined) {
+                    anyInTopRow = true;
+                    break;
+                }
+            }
+
+            return anyInTopRow;      
         }
 
         run() {

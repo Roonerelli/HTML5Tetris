@@ -351,7 +351,14 @@ var Game;
             this.game = game;
         }
         Board.prototype.game_over = function () {
-            return false;
+            var anyInTopRow = false;
+            for(var g = 0; g < this.grid[1].length; g++) {
+                if(this.grid[1][g] != undefined) {
+                    anyInTopRow = true;
+                    break;
+                }
+            }
+            return anyInTopRow;
         };
         Board.prototype.run = function () {
             var ran = this.currentBlock.dropByOne();
