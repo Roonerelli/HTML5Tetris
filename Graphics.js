@@ -39,7 +39,11 @@ var Graphics;
     Graphics.TetrisTimer = TetrisTimer;    
     var TetrisCanvas = (function () {
         function TetrisCanvas() {
+            this.blockSize = 25;
+            this.numColumns = 10;
+            this.numRows = 27;
             this.stage = new createjs.Stage("tetris");
+            this.drawGrid();
         }
         TetrisCanvas.prototype.addChild = function (ele) {
             this.stage.addChild(ele);
@@ -51,6 +55,26 @@ var Graphics;
             this.stage.update();
         };
         TetrisCanvas.prototype.remove = function () {
+        };
+        TetrisCanvas.prototype.drawGrid = function () {
+            for(var i = 0; i < this.numColumns; i++) {
+                var g = new createjs.Graphics();
+                g.beginStroke("#bbb");
+                g.setStrokeStyle(1);
+                g.moveTo(i * this.blockSize + 1, 0);
+                g.lineTo(i * this.blockSize + 1, this.numRows * this.blockSize);
+                var s = new createjs.Shape(g);
+                this.stage.addChild(s);
+            }
+            for(var i = 0; i < this.numRows; i++) {
+                var g = new createjs.Graphics();
+                g.beginStroke("#bbb");
+                g.setStrokeStyle(1);
+                g.moveTo(0, i * this.blockSize);
+                g.lineTo(this.numColumns * this.blockSize, i * this.blockSize);
+                var s = new createjs.Shape(g);
+                this.stage.addChild(s);
+            }
         };
         return TetrisCanvas;
     })();

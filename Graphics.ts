@@ -47,9 +47,14 @@ module Graphics {
 
     export class TetrisCanvas {
 
+        blockSize = 25;
+        numColumns = 10;
+        numRows = 27;
+
         public stage; 
         constructor() {
             this.stage = new createjs.Stage("tetris");
+            this.drawGrid();
         }
 
         addChild(ele: any) {
@@ -65,6 +70,30 @@ module Graphics {
         }
         
         remove() {
+        }
+
+        drawGrid() {
+            for (var i = 0; i < this.numColumns; i++) {
+                var g = new createjs.Graphics();
+                g.beginStroke("#bbb");
+                g.setStrokeStyle(1);
+
+                g.moveTo(i*this.blockSize + 1,0);
+                g.lineTo(i*this.blockSize + 1,this.numRows*this.blockSize);
+                var s = new createjs.Shape(g);
+                this.stage.addChild(s);
+            }
+
+            for (var i = 0; i < this.numRows; i++) {
+                var g = new createjs.Graphics();
+                g.beginStroke("#bbb");
+                g.setStrokeStyle(1);
+
+                g.moveTo(0, i*this.blockSize);
+                g.lineTo(this.numColumns*this.blockSize, i*this.blockSize);
+                var s = new createjs.Shape(g);
+                this.stage.addChild(s);
+            }
         }
     }
 
