@@ -57,18 +57,18 @@ var Graphics;
         TetrisCanvas.prototype.remove = function () {
         };
         TetrisCanvas.prototype.drawGrid = function () {
-            for(var i = 0; i < this.numColumns; i++) {
+            for(var i = 1; i <= this.numColumns; i++) {
                 var g = new createjs.Graphics();
-                g.beginStroke("#bbb");
+                g.beginStroke("#aaa");
                 g.setStrokeStyle(1);
-                g.moveTo(i * this.blockSize + 1, 0);
-                g.lineTo(i * this.blockSize + 1, this.numRows * this.blockSize);
+                g.moveTo(i * this.blockSize, 0);
+                g.lineTo(i * this.blockSize, this.numRows * this.blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
             }
             for(var i = 0; i < this.numRows; i++) {
                 var g = new createjs.Graphics();
-                g.beginStroke("#bbb");
+                g.beginStroke("#aaa");
                 g.setStrokeStyle(1);
                 g.moveTo(0, i * this.blockSize);
                 g.lineTo(this.numColumns * this.blockSize, i * this.blockSize);
@@ -397,26 +397,20 @@ var Game;
             this.draw();
         };
         Board.prototype.move_left = function () {
-            if(!this.game_over() && this.game.isRunning) {
-                this.currentBlock.move(-1, 0, 0);
-            }
-            this.draw();
+            this.move(-1, 0, 0);
         };
         Board.prototype.move_right = function () {
-            if(!this.game_over() && this.game.isRunning) {
-                this.currentBlock.move(1, 0, 0);
-            }
-            this.draw();
+            this.move(1, 0, 0);
         };
         Board.prototype.rotate_clockwise = function () {
-            if(!this.game_over() && this.game.isRunning) {
-                this.currentBlock.move(0, 0, 1);
-            }
-            this.draw();
+            this.move(0, 0, 1);
         };
         Board.prototype.rotate_counter_clockwise = function () {
+            this.move(0, 0, -1);
+        };
+        Board.prototype.move = function (x, y, rot) {
             if(!this.game_over() && this.game.isRunning) {
-                this.currentBlock.move(0, 0, -1);
+                this.currentBlock.move(x, y, rot);
             }
             this.draw();
         };
