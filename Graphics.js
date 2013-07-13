@@ -21,42 +21,42 @@ var Graphics;
         return TetrisRoot;
     })();
     Graphics.TetrisRoot = TetrisRoot;    
-    var TetrisTimer = (function () {
-        function TetrisTimer(interval, fps) {
+    var Ticker = (function () {
+        function Ticker(interval, fps) {
             createjs.Ticker.setInterval(interval);
             createjs.Ticker.setFPS(fps);
             createjs.Ticker.useRAF = true;
         }
-        TetrisTimer.pause = function pause() {
+        Ticker.pause = function pause() {
             var isPaused = !createjs.Ticker.getPaused();
             createjs.Ticker.setPaused(isPaused);
         };
-        TetrisTimer.prototype.setCallback = function (callback) {
+        Ticker.prototype.setCallback = function (callback) {
             createjs.Ticker.addListener(callback);
         };
-        return TetrisTimer;
+        return Ticker;
     })();
-    Graphics.TetrisTimer = TetrisTimer;    
-    var TetrisCanvas = (function () {
-        function TetrisCanvas() {
+    Graphics.Ticker = Ticker;    
+    var Canvas = (function () {
+        function Canvas() {
             this.blockSize = 25;
             this.numColumns = 10;
             this.numRows = 27;
             this.stage = new createjs.Stage("tetris");
             this.drawGrid();
         }
-        TetrisCanvas.prototype.addChild = function (ele) {
+        Canvas.prototype.addChild = function (ele) {
             this.stage.addChild(ele);
         };
-        TetrisCanvas.prototype.removeChild = function (ele) {
+        Canvas.prototype.removeChild = function (ele) {
             this.stage.removeChild(ele);
         };
-        TetrisCanvas.prototype.update = function () {
+        Canvas.prototype.update = function () {
             this.stage.update();
         };
-        TetrisCanvas.prototype.remove = function () {
+        Canvas.prototype.remove = function () {
         };
-        TetrisCanvas.prototype.drawGrid = function () {
+        Canvas.prototype.drawGrid = function () {
             for(var i = 1; i <= this.numColumns; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
@@ -76,11 +76,11 @@ var Graphics;
                 this.stage.addChild(s);
             }
         };
-        return TetrisCanvas;
+        return Canvas;
     })();
-    Graphics.TetrisCanvas = TetrisCanvas;    
-    var TetrisRect = (function () {
-        function TetrisRect(canvas, x, y, w, h, color) {
+    Graphics.Canvas = Canvas;    
+    var Square = (function () {
+        function Square(canvas, x, y, w, h, color) {
             this.rect = new createjs.Shape();
             this.rect.graphics.beginStroke("#000");
             this.rect.graphics.setStrokeStyle(1);
@@ -90,18 +90,18 @@ var Graphics;
             this.canvas.addChild(this.rect);
             this.canvas.update();
         }
-        TetrisRect.prototype.move = function (dx, dy) {
+        Square.prototype.move = function (dx, dy) {
             this.rect.x += dx;
             this.rect.y += dy;
         };
-        TetrisRect.prototype.remove = function () {
+        Square.prototype.remove = function () {
             this.canvas.removeChild(this.rect);
         };
-        return TetrisRect;
+        return Square;
     })();
-    Graphics.TetrisRect = TetrisRect;    
-    var TetrisLabel = (function () {
-        function TetrisLabel(canvas, text, xPosn) {
+    Graphics.Square = Square;    
+    var Label = (function () {
+        function Label(canvas, text, xPosn) {
             this.font = "20px Arial";
             this.colour = "#ff7700";
             this.label = new createjs.Text(text, this.font, this.colour);
@@ -109,42 +109,42 @@ var Graphics;
             canvas.addChild(this.label);
             canvas.update();
         }
-        TetrisLabel.prototype.setText = function (text) {
+        Label.prototype.setText = function (text) {
             this.label.text = text;
         };
-        return TetrisLabel;
+        return Label;
     })();
-    Graphics.TetrisLabel = TetrisLabel;    
-    var TetrisButton = (function () {
-        function TetrisButton(canvas, x, y, w, h) {
+    Graphics.Label = Label;    
+    var Button = (function () {
+        function Button(canvas, x, y, w, h) {
         }
-        return TetrisButton;
+        return Button;
     })();
-    Graphics.TetrisButton = TetrisButton;    
+    Graphics.Button = Button;    
 })(Graphics || (Graphics = {}));
 var Game;
 (function (Game) {
     var Piece = (function () {
         function Piece(pointArray, board) {
-            this.base_position = [
+            this.basePosition = [
                 5, 
                 0
             ];
             this.moved = true;
-            this.all_rotations = pointArray;
-            var rotIndx = Math.floor(Math.random() * this.all_rotations.length);
-            this.rotation_index = rotIndx;
+            this.allRotations = pointArray;
+            var rotIndx = Math.floor(Math.random() * this.allRotations.length);
+            this.rotationIndex = rotIndx;
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx];
-            this.base_position = [
+            this.basePosition = [
                 5, 
                 0
             ];
             this.board = board;
             this.moved = true;
         }
-        Piece.prototype.current_rotation = function () {
-            return this.all_rotations[this.rotation_index];
+        Piece.prototype.currentRotation = function () {
+            return this.allRotations[this.rotationIndex];
         };
         Piece.prototype.dropByOne = function () {
             this.moved = this.move(0, 1, 0);
@@ -152,54 +152,54 @@ var Game;
         };
         Piece.prototype.move = function (deltaX, deltaY, deltaRotation) {
             this.moved = true;
-            var potential = this.all_rotations[(this.rotation_index + deltaRotation) % this.all_rotations.length];
+            var potential = this.allRotations[(this.rotationIndex + deltaRotation) % this.allRotations.length];
             for(var index = 0; index < potential.length; ++index) {
                 var posns = potential[index];
                 if(!this.board.emptyAt([
-                    posns[0] + deltaX + this.base_position[0], 
-                    posns[1] + deltaY + this.base_position[1]
+                    posns[0] + deltaX + this.basePosition[0], 
+                    posns[1] + deltaY + this.basePosition[1]
                 ])) {
                     this.moved = false;
                 }
             }
             if(this.moved) {
-                this.base_position[0] += deltaX;
-                this.base_position[1] += deltaY;
-                this.rotation_index = (this.rotation_index + deltaRotation) % this.all_rotations.length;
+                this.basePosition[0] += deltaX;
+                this.basePosition[1] += deltaY;
+                this.rotationIndex = (this.rotationIndex + deltaRotation) % this.allRotations.length;
             }
             return this.moved;
         };
-        Piece.rotations = function rotations(point_array) {
-            var rotate1 = _.map(point_array, function (point) {
+        Piece.rotations = function rotations(pointArray) {
+            var rotate1 = _.map(pointArray, function (point) {
                 return [
                     -point[1], 
                     point[0]
                 ];
             });
-            var rotate2 = _.map(point_array, function (point) {
+            var rotate2 = _.map(pointArray, function (point) {
                 return [
                     -point[0], 
                     point[1]
                 ];
             });
-            var rotate3 = _.map(point_array, function (point) {
+            var rotate3 = _.map(pointArray, function (point) {
                 return [
                     point[1], 
                     -point[0]
                 ];
             });
             return [
-                point_array, 
+                pointArray, 
                 rotate1, 
                 rotate2, 
                 rotate3
             ];
         };
-        Piece.next_piece = function next_piece(board) {
-            var indx = Math.floor(Math.random() * this.All_Pieces.length);
-            return new Piece(this.All_Pieces[indx], board);
+        Piece.nextPiece = function nextPiece(board) {
+            var indx = Math.floor(Math.random() * this.AllPieces.length);
+            return new Piece(this.AllPieces[indx], board);
         };
-        Piece.All_Pieces = [
+        Piece.AllPieces = [
             [
                 [
                     [
@@ -372,22 +372,20 @@ var Game;
             for(var i = 0; i < this.numRows; i++) {
                 this.grid[i] = new Array(this.numColumns);
             }
-            this.currentBlock = Piece.next_piece(this);
+            this.currentBlock = Piece.nextPiece(this);
             this.game = game;
         }
-        Board.prototype.game_over = function () {
-            var anyInTopRow = _.some(this.grid[1], function (x) {
+        Board.prototype.gameOver = function () {
+            return _.some(this.grid[1], function (x) {
                 return x != undefined;
             });
-            console.log(anyInTopRow);
-            return anyInTopRow;
         };
         Board.prototype.run = function () {
             var ran = this.currentBlock.dropByOne();
             if(!ran) {
                 this.storeCurrent();
-                if(!this.game_over()) {
-                    this.next_piece();
+                if(!this.gameOver()) {
+                    this.nextPiece();
                 }
             }
             this.game.updateScore();
@@ -406,7 +404,7 @@ var Game;
             this.move(0, 0, -1);
         };
         Board.prototype.move = function (x, y, rot) {
-            if(!this.game_over() && this.game.isRunning) {
+            if(!this.gameOver() && this.game.isRunning) {
                 this.currentBlock.move(x, y, rot);
             }
             this.draw();
@@ -415,8 +413,8 @@ var Game;
             if(this.game.isRunning) {
                 var ran = this.currentBlock.dropByOne();
                 while(ran) {
-                    for(var i = 0; i < this.current_pos.length; i++) {
-                        var block = this.current_pos[i];
+                    for(var i = 0; i < this.currentPos.length; i++) {
+                        var block = this.currentPos[i];
                         block.remove();
                     }
                     this.score += 1;
@@ -424,23 +422,23 @@ var Game;
                 }
                 this.draw();
                 this.storeCurrent();
-                if(!this.game_over()) {
-                    this.next_piece();
+                if(!this.gameOver()) {
+                    this.nextPiece();
                 }
                 this.game.updateScore();
                 this.draw();
             }
         };
-        Board.prototype.next_piece = function () {
-            this.currentBlock = Piece.next_piece(this);
-            this.current_pos = null;
+        Board.prototype.nextPiece = function () {
+            this.currentBlock = Piece.nextPiece(this);
+            this.currentPos = null;
         };
         Board.prototype.storeCurrent = function () {
-            var locations = this.currentBlock.current_rotation();
-            var displacements = this.currentBlock.base_position;
+            var locations = this.currentBlock.currentRotation();
+            var displacements = this.currentBlock.basePosition;
             for(var i = 0; i < 4; i++) {
                 var current = locations[i];
-                this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
+                this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.currentPos[i];
             }
             this.removeFilled();
         };
@@ -485,7 +483,7 @@ var Game;
             }
         };
         Board.prototype.draw = function () {
-            this.current_pos = this.game.draw_piece(this.currentBlock, this.current_pos);
+            this.currentPos = this.game.drawPiece(this.currentBlock, this.currentPos);
         };
         return Board;
     })();
@@ -493,8 +491,8 @@ var Game;
     var Tetris = (function () {
         function Tetris() {
             this.root = new Graphics.TetrisRoot();
-            this.ticker = new Graphics.TetrisTimer(200, 2);
-            this.canvas = new Graphics.TetrisCanvas();
+            this.ticker = new Graphics.Ticker(200, 2);
+            this.canvas = new Graphics.Canvas();
             this.ticker.setCallback(this);
             this.board = new Board(this);
             this.isRunning = true;
@@ -522,14 +520,14 @@ var Game;
             });
         };
         Tetris.prototype.controls = function () {
-            this.score = new Graphics.TetrisLabel(this.canvas, "0", 200);
+            this.score = new Graphics.Label(this.canvas, "0", 200);
         };
         Tetris.prototype.tick = function () {
-            if(this.isRunning && !this.board.game_over()) {
+            if(this.isRunning && !this.board.gameOver()) {
                 this.board.run();
             }
         };
-        Tetris.prototype.draw_piece = function (piece, old) {
+        Tetris.prototype.drawPiece = function (piece, old) {
             if(old != null && piece.moved) {
                 for(var i = 0; i < old.length; i++) {
                     var o = old[i];
@@ -537,12 +535,12 @@ var Game;
                 }
             }
             var size = this.board.blockSize;
-            var blocks = piece.current_rotation();
-            var start = piece.base_position;
+            var blocks = piece.currentRotation();
+            var start = piece.basePosition;
             var results = [];
             for(var i = 0; i < blocks.length; i++) {
                 var block = blocks[i];
-                results.push(new Graphics.TetrisRect(this.canvas, start[0] * size + block[0] * size + 3, start[1] * size + block[1] * size, this.board.blockSize, this.board.blockSize, piece.color));
+                results.push(new Graphics.Square(this.canvas, start[0] * size + block[0] * size + 3, start[1] * size + block[1] * size, this.board.blockSize, this.board.blockSize, piece.color));
             }
             return results;
         };

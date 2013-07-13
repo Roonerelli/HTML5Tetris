@@ -21,12 +21,12 @@ module Graphics {
             }
         }
 
-        bind(char, action) {
+        bind(char, action : Function) {
             TetrisRoot.keyBindings[char] = action;
         }
     }
 
-    export class TetrisTimer {
+    export class Ticker {
 
         constructor(interval: number, fps: number) {
             createjs.Ticker.setInterval(interval);
@@ -45,7 +45,7 @@ module Graphics {
         }
     } 
 
-    export class TetrisCanvas {
+    export class Canvas {
 
         blockSize = 25;
         numColumns = 10;
@@ -61,7 +61,7 @@ module Graphics {
             this.stage.addChild(ele);
         }
 
-        removeChild(ele: TetrisRect) {
+        removeChild(ele: Square) {
             this.stage.removeChild(ele);
         }
 
@@ -97,12 +97,12 @@ module Graphics {
         }
     }
 
-    export class TetrisRect {
+    export class Square {
 
         public rect;
-        private canvas : TetrisCanvas;
+        private canvas : Canvas;
 
-        constructor(canvas: TetrisCanvas, x, y, w, h, color) {
+        constructor(canvas: Canvas, x, y, w, h, color) {
             
             this.rect = new createjs.Shape();
             this.rect.graphics.beginStroke("#000");
@@ -125,13 +125,13 @@ module Graphics {
         }
     } 
 
-    export class TetrisLabel {
+    export class Label {
 
         private label;
         private font = "20px Arial";
         private colour = "#ff7700";
 
-        constructor(canvas: TetrisCanvas, text: string, xPosn : number) {
+        constructor(canvas: Canvas, text: string, xPosn : number) {
 
             this.label = new createjs.Text(text, this.font, this.colour);
             this.label.x = xPosn;
@@ -144,9 +144,9 @@ module Graphics {
         }
     }
 
-    export class TetrisButton {
+    export class Button {
 
-        constructor(canvas: TetrisCanvas, x, y, w, h, ) {
+        constructor(canvas: Canvas, x, y, w, h, ) {
 
         }
     }
@@ -157,26 +157,26 @@ module Game {
 
     export class Piece {
         
-        all_rotations;
-        rotation_index;
+        allRotations;
+        rotationIndex;
         color;
-        base_position = [5, 0];
+        basePosition = [5, 0];
         board: Board;
         moved = true;
         
         constructor(pointArray, board : Board) {
-            this.all_rotations = pointArray;
-            var rotIndx = Math.floor(Math.random() * this.all_rotations.length);
-            this.rotation_index = rotIndx; //TODO:randomize
+            this.allRotations = pointArray;
+            var rotIndx = Math.floor(Math.random() * this.allRotations.length);
+            this.rotationIndex = rotIndx; //TODO:randomize
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx]; 
-            this.base_position = [5, 0];
+            this.basePosition = [5, 0];
             this.board = board;
             this.moved = true;
         }
 
-        current_rotation() {
-            return this.all_rotations[this.rotation_index];
+        currentRotation() {
+            return this.allRotations[this.rotationIndex];
         }
 
         dropByOne() {
@@ -186,40 +186,40 @@ module Game {
 
         move(deltaX, deltaY, deltaRotation) {
             this.moved = true;
-            var potential = this.all_rotations[(this.rotation_index + deltaRotation) % this.all_rotations.length];
+            var potential = this.allRotations[(this.rotationIndex + deltaRotation) % this.allRotations.length];
 
             for (var index = 0; index < potential.length; ++index) {
                 var posns = potential[index];
                 if(!this.board.emptyAt([
-                    posns[0] + deltaX + this.base_position[0], 
-                    posns[1] + deltaY + this.base_position[1]])) {
+                    posns[0] + deltaX + this.basePosition[0], 
+                    posns[1] + deltaY + this.basePosition[1]])) {
                     this.moved = false;
                 }
             }
 
             if (this.moved) {
-                this.base_position[0] += deltaX;
-                this.base_position[1] += deltaY;
-                this.rotation_index = (this.rotation_index + deltaRotation) % this.all_rotations.length;
+                this.basePosition[0] += deltaX;
+                this.basePosition[1] += deltaY;
+                this.rotationIndex = (this.rotationIndex + deltaRotation) % this.allRotations.length;
             }
 
             return this.moved;
         }
 
-        static rotations (point_array) {
-            var rotate1 = _.map(point_array, (point) => { return [-point[1], point[0]]; })
-            var rotate2 = _.map(point_array, (point) => { return [-point[0], point[1]]; })
-            var rotate3 = _.map(point_array, (point) => { return [point[1], -point[0]]; })
+        static rotations (pointArray) {
+            var rotate1 = _.map(pointArray, (point) => { return [-point[1], point[0]]; })
+            var rotate2 = _.map(pointArray, (point) => { return [-point[0], point[1]]; })
+            var rotate3 = _.map(pointArray, (point) => { return [point[1], -point[0]]; })
 
-            return [point_array, rotate1, rotate2, rotate3];
+            return [pointArray, rotate1, rotate2, rotate3];
         }
         
-        static next_piece(board: Board) {            
-            var indx = Math.floor(Math.random() * this.All_Pieces.length);
-            return new Piece(this.All_Pieces[indx], board);
+        static nextPiece(board: Board) {            
+            var indx = Math.floor(Math.random() * this.AllPieces.length);
+            return new Piece(this.AllPieces[indx], board);
         }
 
-        static All_Pieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]], //# square (only needs one)
+        static AllPieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]], //# square (only needs one)
             Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), // T
             [[[0, 0], [-1, 0], [1, 0], [2, 0]],     // long
                 [[0, 0], [0, -1], [0, 1], [0, 2]]],
@@ -242,7 +242,7 @@ module Game {
         blockSize = 25;
         numColumns = 10;
         numRows = 27;
-        current_pos: any;
+        currentPos: any;
         
         constructor(game: Tetris) {
             //this.grid = _.map(_.range(this.numRows), function(){return _.range(this.numColumns)});
@@ -253,27 +253,22 @@ module Game {
                 this.grid[i] = new Array(this.numColumns);
             }
 
-            this.currentBlock = Piece.next_piece(this);
+            this.currentBlock = Piece.nextPiece(this);
             this.game = game;
         }
 
-        game_over() {
+        gameOver() {
+            return _.some(this.grid[1], (x) => {return x != undefined;});
 
-            var anyInTopRow = _.some(this.grid[1], (x) => {return x != undefined;});
-
-
-            /*var anyInTopRow = false;
-
-            for (var g = 0; g < this.grid[1].length; g++ ) {
-                if (this.grid[1][g] != undefined) {
+            /*
+            var anyInTopRow = false;
+            for(var g = 0; g < this.grid[1].length; g++) {
+                if(this.grid[1][g] != undefined) {
                     anyInTopRow = true;
                     break;
                 }
-            }*/
-
-            console.log(anyInTopRow);
-
-            return anyInTopRow;      
+            }
+            */
         }
 
         run() {
@@ -282,8 +277,8 @@ module Game {
             if (!ran) {
                 this.storeCurrent();
                 
-                if (!this.game_over()) {
-                    this.next_piece();                    
+                if (!this.gameOver()) {
+                    this.nextPiece();                    
                 }
             }
 
@@ -308,7 +303,7 @@ module Game {
         }
 
         move(x, y, rot) {
-            if (!this.game_over() && this.game.isRunning) {
+            if (!this.gameOver() && this.game.isRunning) {
                 this.currentBlock.move(x, y, rot);
             }
             this.draw();
@@ -320,19 +315,19 @@ module Game {
 
                 while (ran) {
 
-                    for (var i = 0; i < this.current_pos.length; i++) {
-                        var block = this.current_pos[i];
+                    for (var i = 0; i < this.currentPos.length; i++) {
+                        var block = this.currentPos[i];
                         block.remove();
                     }
 
-                    //_.each(this.current_pos, function (block) { block.remove; })
+                    //_.each(this.currentPos, function (block) { block.remove; })
                     this.score += 1;
                     ran = this.currentBlock.dropByOne();
                 }
                 this.draw();
                 this.storeCurrent();
-                if (!this.game_over()) {
-                    this.next_piece();
+                if (!this.gameOver()) {
+                    this.nextPiece();
                 }
 
                 this.game.updateScore();
@@ -341,18 +336,18 @@ module Game {
             }
         }
 
-        next_piece() {
-            this.currentBlock = Piece.next_piece(this);
-            this.current_pos = null;
+        nextPiece() {
+            this.currentBlock = Piece.nextPiece(this);
+            this.currentPos = null;
         }
 
         storeCurrent() {
-            var locations = this.currentBlock.current_rotation();
-            var displacements = this.currentBlock.base_position
+            var locations = this.currentBlock.currentRotation();
+            var displacements = this.currentBlock.basePosition
 
             for (var i = 0; i < 4; i++) {
                 var current = locations[i];
-                this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.current_pos[i];
+                this.grid[current[1] + displacements[1]][current[0] + displacements[0]] = this.currentPos[i];
             }
             
             this.removeFilled();
@@ -414,24 +409,24 @@ module Game {
         }
 
         draw() {
-            this.current_pos = this.game.draw_piece(this.currentBlock, this.current_pos);
+            this.currentPos = this.game.drawPiece(this.currentBlock, this.currentPos);
         }
     }
 
     export class Tetris {
 
         root: Graphics.TetrisRoot;
-        ticker: Graphics.TetrisTimer;
-        canvas: Graphics.TetrisCanvas;
-        rect: Graphics.TetrisRect;
+        ticker: Graphics.Ticker;
+        canvas: Graphics.Canvas;
+        rect: Graphics.Square;
         board: Board;
         isRunning: bool;
-        score : Graphics.TetrisLabel;
+        score : Graphics.Label;
 
         constructor() {
             this.root = new Graphics.TetrisRoot();
-            this.ticker = new Graphics.TetrisTimer(200, 2);
-            this.canvas = new Graphics.TetrisCanvas();
+            this.ticker = new Graphics.Ticker(200, 2);
+            this.canvas = new Graphics.Canvas();
             this.ticker.setCallback(this);
             this.board = new Board(this);
             this.isRunning = true;
@@ -454,16 +449,16 @@ module Game {
         }
 
         controls() {
-            this.score = new Graphics.TetrisLabel(this.canvas, "0", 200);
+            this.score = new Graphics.Label(this.canvas, "0", 200);
         }
 
         tick() {
-            if (this.isRunning && !this.board.game_over()) {
+            if (this.isRunning && !this.board.gameOver()) {
                 this.board.run();
             }
         }
 
-        draw_piece(piece: Piece, old) {
+        drawPiece(piece: Piece, old) {
 
             if (old != null && piece.moved) {
                 for (var i = 0; i < old.length; i++) {
@@ -473,15 +468,15 @@ module Game {
             }
             
             var size = this.board.blockSize;
-            var blocks = piece.current_rotation();
-            var start = piece.base_position;
+            var blocks = piece.currentRotation();
+            var start = piece.basePosition;
 
             var results = [];
 
             for (var i = 0; i < blocks.length; i++) {
                 var block = blocks[i];
 
-                results.push(new Graphics.TetrisRect(this.canvas, 
+                results.push(new Graphics.Square(this.canvas, 
                                     start[0] * size + block[0]*size + 3,
                                     start[1] * size + block[1]*size,
                                     this.board.blockSize, this.board.blockSize, piece.color));
