@@ -259,14 +259,19 @@ module Game {
 
         game_over() {
 
-            var anyInTopRow = false;
+            var anyInTopRow = _.some(this.grid[1], (x) => {return x != undefined;});
+
+
+            /*var anyInTopRow = false;
 
             for (var g = 0; g < this.grid[1].length; g++ ) {
                 if (this.grid[1][g] != undefined) {
                     anyInTopRow = true;
                     break;
                 }
-            }
+            }*/
+
+            console.log(anyInTopRow);
 
             return anyInTopRow;      
         }
@@ -400,8 +405,6 @@ module Game {
                         }
 
                         this.grid[this.grid.length - k + 1] = this.grid[this.grid.length - k].slice();
-
-                        //this.grid[this.grid.length - k + 1] = new Array(this.grid[this.grid.length - k]);
                     }
 
                     this.grid[0] =  new Array(this.numColumns);
@@ -455,7 +458,7 @@ module Game {
         }
 
         tick() {
-            if (this.isRunning) {
+            if (this.isRunning && !this.board.game_over()) {
                 this.board.run();
             }
         }

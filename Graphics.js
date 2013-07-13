@@ -376,13 +376,10 @@ var Game;
             this.game = game;
         }
         Board.prototype.game_over = function () {
-            var anyInTopRow = false;
-            for(var g = 0; g < this.grid[1].length; g++) {
-                if(this.grid[1][g] != undefined) {
-                    anyInTopRow = true;
-                    break;
-                }
-            }
+            var anyInTopRow = _.some(this.grid[1], function (x) {
+                return x != undefined;
+            });
+            console.log(anyInTopRow);
             return anyInTopRow;
         };
         Board.prototype.run = function () {
@@ -528,7 +525,7 @@ var Game;
             this.score = new Graphics.TetrisLabel(this.canvas, "0", 200);
         };
         Tetris.prototype.tick = function () {
-            if(this.isRunning) {
+            if(this.isRunning && !this.board.game_over()) {
                 this.board.run();
             }
         };
