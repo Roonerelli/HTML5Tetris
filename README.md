@@ -1,7 +1,8 @@
-HTML5 Tetris
-===========
+# HTML5 Tetris
 
-Tetris 
-  - Typescript
-  - EaselJs
-  - Underscore
+## A Tetris clone built using
+
+* Typescript
+* Easel.js
+* Underscore.js
+* Hammer.js
