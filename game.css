@@ -2,3 +2,13 @@
     border: 1px solid #000000;
     background-color:#333333;
 }
+
+#scoreboard {
+    border: 1px solid #000000;
+    background-color:#333333;
+    color: orange;
+    width: 250px;
+    height: 40px;
+    font:36px arial,sans-serif;
+    text-align: right;;
+}

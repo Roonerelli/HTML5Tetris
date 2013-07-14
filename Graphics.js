@@ -17,7 +17,7 @@ var Graphics;
         }
         TetrisRoot.keyBindings = {
         };
-        TetrisRoot.prototype.bind = function (keyChar, action) {
+        TetrisRoot.prototype.bindKey = function (keyChar, action) {
             TetrisRoot.keyBindings[keyChar] = action;
         };
         TetrisRoot.prototype.bindTouch = function (eventName, action) {
@@ -106,16 +106,11 @@ var Graphics;
     })();
     Graphics.Square = Square;    
     var Label = (function () {
-        function Label(canvas, text, xPosn) {
-            this.font = "20px Arial";
-            this.colour = "#ff7700";
-            this.label = new createjs.Text(text, this.font, this.colour);
-            this.label.x = xPosn;
-            canvas.addChild(this.label);
-            canvas.update();
+        function Label(elementId) {
+            this.ele = document.getElementById(elementId);
         }
         Label.prototype.setText = function (text) {
-            this.label.text = text;
+            this.ele.innerHTML = text;
         };
         return Label;
     })();
@@ -393,6 +388,7 @@ var Game;
                     this.nextPiece();
                 }
             }
+            this.score += 1;
             this.game.updateScore();
             this.draw();
         };
@@ -509,19 +505,19 @@ var Game;
         };
         Tetris.prototype.keyBindings = function () {
             var _this = this;
-            this.root.bind(37, function () {
+            this.root.bindKey(37, function () {
                 _this.board.move_left();
             });
-            this.root.bind(39, function () {
+            this.root.bindKey(39, function () {
                 _this.board.move_right();
             });
-            this.root.bind(38, function () {
+            this.root.bindKey(38, function () {
                 _this.board.rotate_clockwise();
             });
-            this.root.bind(40, function () {
+            this.root.bindKey(40, function () {
                 _this.board.rotate_counter_clockwise();
             });
-            this.root.bind(32, function () {
+            this.root.bindKey(32, function () {
                 _this.board.drop_all_the_way();
             });
         };
@@ -536,9 +532,15 @@ var Game;
             this.root.bindTouch("swiperight", function () {
                 _this.board.move_right();
             });
+            this.root.bindTouch("swipeup", function () {
+                _this.board.rotate_clockwise();
+            });
+            this.root.bindTouch("swipedown", function () {
+                _this.board.rotate_counter_clockwise();
+            });
         };
         Tetris.prototype.controls = function () {
-            this.score = new Graphics.Label(this.canvas, "0", 200);
+            this.score = new Graphics.Label('scoreboard');
         };
         Tetris.prototype.tick = function () {
             if(this.isRunning && !this.board.gameOver()) {

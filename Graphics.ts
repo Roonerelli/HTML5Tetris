@@ -25,7 +25,7 @@ module Graphics {
             }
         }
 
-        bind(keyChar, action : Function) {
+        bindKey(keyChar, action : Function) {
             TetrisRoot.keyBindings[keyChar] = action;
         }
 
@@ -135,20 +135,14 @@ module Graphics {
 
     export class Label {
 
-        private label;
-        private font = "20px Arial";
-        private colour = "#ff7700";
+        private ele;
 
-        constructor(canvas: Canvas, text: string, xPosn : number) {
-
-            this.label = new createjs.Text(text, this.font, this.colour);
-            this.label.x = xPosn;
-            canvas.addChild(this.label);
-            canvas.update();
+        constructor(elementId: string) {
+            this.ele = document.getElementById(elementId);
         }
 
         setText(text :string) {
-            this.label.text = text;
+            this.ele.innerHTML  = text;
         }
     }
 
@@ -290,6 +284,7 @@ module Game {
                 }
             }
 
+            this.score += 1;
             this.game.updateScore();
             this.draw();
         }
@@ -448,21 +443,23 @@ module Game {
         }
         
         keyBindings() {
-            this.root.bind(37, () => { this.board.move_left(); })
-            this.root.bind(39, () => { this.board.move_right(); })
-            this.root.bind(38, () => { this.board.rotate_clockwise(); })
-            this.root.bind(40, () => { this.board.rotate_counter_clockwise(); })            
-            this.root.bind(32, () => { this.board.drop_all_the_way(); })
+            this.root.bindKey(37, () => { this.board.move_left(); })
+            this.root.bindKey(39, () => { this.board.move_right(); })
+            this.root.bindKey(38, () => { this.board.rotate_clockwise(); })
+            this.root.bindKey(40, () => { this.board.rotate_counter_clockwise(); })            
+            this.root.bindKey(32, () => { this.board.drop_all_the_way(); })
         }
 
         touchBindings() {
             this.root.bindTouch("tap", () => {this.board.drop_all_the_way();})
             this.root.bindTouch("swipeleft", () => {this.board.move_left();})
             this.root.bindTouch("swiperight", () => {this.board.move_right();})
+            this.root.bindTouch("swipeup", () => {this.board.rotate_clockwise();})
+            this.root.bindTouch("swipedown", () => {this.board.rotate_counter_clockwise();})
         }
 
         controls() {
-            this.score = new Graphics.Label(this.canvas, "0", 200);
+            this.score = new Graphics.Label('scoreboard');
         }
 
         tick() {
@@ -499,7 +496,6 @@ module Game {
 
         updateScore() {
             this.score.setText(this.board.score.toString());
-
         }
     }
 }
