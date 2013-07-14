@@ -116,7 +116,9 @@ var Graphics;
     })();
     Graphics.Label = Label;    
     var Button = (function () {
-        function Button(canvas, x, y, w, h) {
+        function Button(elementId, action) {
+            this.ele = document.getElementById(elementId);
+            this.ele.onclick = action;
         }
         return Button;
     })();
@@ -499,6 +501,7 @@ var Game;
             this.isRunning = true;
             this.keyBindings();
             this.touchBindings();
+            this.buttonBindings();
             this.controls();
         }
         Tetris.prototype.newGame = function () {
@@ -539,6 +542,12 @@ var Game;
                 _this.board.rotate_counter_clockwise();
             });
         };
+        Tetris.prototype.buttonBindings = function () {
+            var _this = this;
+            this.pauseBtn = new Graphics.Button('pause', function () {
+                _this.pause();
+            });
+        };
         Tetris.prototype.controls = function () {
             this.score = new Graphics.Label('scoreboard');
         };
@@ -546,6 +555,9 @@ var Game;
             if(this.isRunning && !this.board.gameOver()) {
                 this.board.run();
             }
+        };
+        Tetris.prototype.pause = function () {
+            Graphics.Ticker.pause();
         };
         Tetris.prototype.drawPiece = function (piece, old) {
             if(old != null && piece.moved) {

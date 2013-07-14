@@ -1,6 +1,8 @@
 #tetris {
     border: 1px solid #000000;
     background-color:#333333;
+    margin:0px;
+    
 }
 
 #scoreboard {
@@ -11,4 +13,20 @@
     height: 40px;
     font:36px arial,sans-serif;
     text-align: right;;
+}
+
+controls {
+    margin:0px;
+    
+}
+
+button {
+    border: 1px solid #000000;
+    padding:0px;
+    margin:0px;
+    
+    background-color:#333333;
+    color: orange;
+    width:82px;
+    height: 40px;
 }

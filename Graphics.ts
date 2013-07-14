@@ -25,7 +25,7 @@ module Graphics {
             }
         }
 
-        bindKey(keyChar, action : Function) {
+        bindKey(keyChar : number, action : Function) {
             TetrisRoot.keyBindings[keyChar] = action;
         }
 
@@ -148,8 +148,11 @@ module Graphics {
 
     export class Button {
 
-        constructor(canvas: Canvas, x, y, w, h, ) {
+        private ele;
 
+        constructor(elementId: string, action : Function) {
+            this.ele = document.getElementById(elementId);
+            this.ele.onclick = action;
         }
     }
 }
@@ -422,6 +425,7 @@ module Game {
         ticker: Graphics.Ticker;
         canvas: Graphics.Canvas;
         rect: Graphics.Square;
+        pauseBtn: Graphics.Button;
         board: Board;
         isRunning: bool;
         score : Graphics.Label;
@@ -435,6 +439,7 @@ module Game {
             this.isRunning = true;
             this.keyBindings();
             this.touchBindings();
+            this.buttonBindings();
             this.controls();
         }
 
@@ -458,6 +463,10 @@ module Game {
             this.root.bindTouch("swipedown", () => {this.board.rotate_counter_clockwise();})
         }
 
+        buttonBindings() {
+            this.pauseBtn = new Graphics.Button('pause', () => {this.pause();});
+        }
+
         controls() {
             this.score = new Graphics.Label('scoreboard');
         }
@@ -466,6 +475,10 @@ module Game {
             if (this.isRunning && !this.board.gameOver()) {
                 this.board.run();
             }
+        }
+
+        pause() {
+            Graphics.Ticker.pause();
         }
 
         drawPiece(piece: Piece, old) {
