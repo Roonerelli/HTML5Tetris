@@ -1,6 +1,7 @@
 
 var createjs;
 var _;
+var Hammer;
 
 module Graphics {
 
@@ -21,8 +22,14 @@ module Graphics {
             }
         }
 
-        bind(char, action : Function) {
-            TetrisRoot.keyBindings[char] = action;
+        bind(keyChar, action : Function) {
+            TetrisRoot.keyBindings[keyChar] = action;
+        }
+
+        bindTouch(eventName : string, action : Function) {
+            var gameCanvas = document.getElementById('tetris');
+            Hammer(gameCanvas).on(eventName, action);
+            
         }
     }
 
@@ -431,6 +438,7 @@ module Game {
             this.board = new Board(this);
             this.isRunning = true;
             this.keyBindings();
+            this.touchBindings();
             this.controls();
         }
 
@@ -439,13 +447,15 @@ module Game {
         }
         
         keyBindings() {
-
             this.root.bind(37, () => { this.board.move_left(); })
             this.root.bind(39, () => { this.board.move_right(); })
             this.root.bind(38, () => { this.board.rotate_clockwise(); })
-            this.root.bind(40, () => { this.board.rotate_counter_clockwise(); })
-            
+            this.root.bind(40, () => { this.board.rotate_counter_clockwise(); })            
             this.root.bind(32, () => { this.board.drop_all_the_way(); })
+        }
+
+        touchBindings() {
+            this.root.bindTouch("tap", () => {this.board.drop_all_the_way();})
         }
 
         controls() {
@@ -459,7 +469,6 @@ module Game {
         }
 
         drawPiece(piece: Piece, old) {
-
             if (old != null && piece.moved) {
                 for (var i = 0; i < old.length; i++) {
                     var o = old[i];

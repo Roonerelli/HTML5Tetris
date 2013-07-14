@@ -1,5 +1,6 @@
 var createjs;
 var _;
+var Hammer;
 var Graphics;
 (function (Graphics) {
     var TetrisRoot = (function () {
@@ -15,8 +16,12 @@ var Graphics;
         }
         TetrisRoot.keyBindings = {
         };
-        TetrisRoot.prototype.bind = function (char, action) {
-            TetrisRoot.keyBindings[char] = action;
+        TetrisRoot.prototype.bind = function (keyChar, action) {
+            TetrisRoot.keyBindings[keyChar] = action;
+        };
+        TetrisRoot.prototype.bindTouch = function (eventName, action) {
+            var gameCanvas = document.getElementById('tetris');
+            Hammer(gameCanvas).on(eventName, action);
         };
         return TetrisRoot;
     })();
@@ -497,6 +502,7 @@ var Game;
             this.board = new Board(this);
             this.isRunning = true;
             this.keyBindings();
+            this.touchBindings();
             this.controls();
         }
         Tetris.prototype.newGame = function () {
@@ -516,6 +522,12 @@ var Game;
                 _this.board.rotate_counter_clockwise();
             });
             this.root.bind(32, function () {
+                _this.board.drop_all_the_way();
+            });
+        };
+        Tetris.prototype.touchBindings = function () {
+            var _this = this;
+            this.root.bindTouch("tap", function () {
                 _this.board.drop_all_the_way();
             });
         };
