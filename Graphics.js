@@ -4,7 +4,8 @@ var Hammer;
 var Graphics;
 (function (Graphics) {
     var TetrisRoot = (function () {
-        function TetrisRoot() {
+        function TetrisRoot(canvasId) {
+            this.gameCanvas = document.getElementById(canvasId);
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -20,8 +21,7 @@ var Graphics;
             TetrisRoot.keyBindings[keyChar] = action;
         };
         TetrisRoot.prototype.bindTouch = function (eventName, action) {
-            var gameCanvas = document.getElementById('tetris');
-            Hammer(gameCanvas).on(eventName, action);
+            Hammer(this.gameCanvas).on(eventName, action);
         };
         return TetrisRoot;
     })();
@@ -495,7 +495,7 @@ var Game;
     Game.Board = Board;    
     var Tetris = (function () {
         function Tetris() {
-            this.root = new Graphics.TetrisRoot();
+            this.root = new Graphics.TetrisRoot('tetris');
             this.ticker = new Graphics.Ticker(200, 2);
             this.canvas = new Graphics.Canvas();
             this.ticker.setCallback(this);
@@ -529,6 +529,12 @@ var Game;
             var _this = this;
             this.root.bindTouch("tap", function () {
                 _this.board.drop_all_the_way();
+            });
+            this.root.bindTouch("swipeleft", function () {
+                _this.board.move_left();
+            });
+            this.root.bindTouch("swiperight", function () {
+                _this.board.move_right();
             });
         };
         Tetris.prototype.controls = function () {

@@ -8,8 +8,11 @@ module Graphics {
     export class TetrisRoot {
         
         static keyBindings = {};
+        private gameCanvas;
 
-        constructor() {
+        constructor(canvasId: string) {
+            this.gameCanvas = document.getElementById(canvasId);
+
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -27,9 +30,7 @@ module Graphics {
         }
 
         bindTouch(eventName : string, action : Function) {
-            var gameCanvas = document.getElementById('tetris');
-            Hammer(gameCanvas).on(eventName, action);
-            
+            Hammer(this.gameCanvas).on(eventName, action);            
         }
     }
 
@@ -431,7 +432,7 @@ module Game {
         score : Graphics.Label;
 
         constructor() {
-            this.root = new Graphics.TetrisRoot();
+            this.root = new Graphics.TetrisRoot('tetris');
             this.ticker = new Graphics.Ticker(200, 2);
             this.canvas = new Graphics.Canvas();
             this.ticker.setCallback(this);
@@ -456,6 +457,8 @@ module Game {
 
         touchBindings() {
             this.root.bindTouch("tap", () => {this.board.drop_all_the_way();})
+            this.root.bindTouch("swipeleft", () => {this.board.move_left();})
+            this.root.bindTouch("swiperight", () => {this.board.move_right();})
         }
 
         controls() {
