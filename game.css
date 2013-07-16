@@ -9,7 +9,7 @@
     border: 1px solid #000000;
     background-color:#333333;
     color: orange;
-    width: 250px;
+    width: 200px;
     height: 40px;
     font:36px arial,sans-serif;
     text-align: right;;
@@ -27,6 +27,6 @@ button {
     
     background-color:#333333;
     color: orange;
-    width:82px;
+    width:65px;
     height: 40px;
 }

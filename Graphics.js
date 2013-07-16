@@ -46,7 +46,7 @@ var Graphics;
         function Canvas() {
             this.blockSize = 20;
             this.numColumns = 10;
-            this.numRows = 20;
+            this.numRows = 25;
             this.stage = new createjs.Stage("tetris");
             this.drawGrid();
         }
@@ -369,7 +369,7 @@ var Game;
             this.delay = 500;
             this.blockSize = 20;
             this.numColumns = 10;
-            this.numRows = 20;
+            this.numRows = 25;
             this.grid = new Array(this.numRows);
             for(var i = 0; i < this.numRows; i++) {
                 this.grid[i] = new Array(this.numColumns);

@@ -57,7 +57,7 @@ module Graphics {
 
         blockSize = 20;
         numColumns = 10;
-        numRows = 20;
+        numRows = 25;
 
         public stage; 
         constructor() {
@@ -246,7 +246,7 @@ module Game {
 
         blockSize = 20;
         numColumns = 10;
-        numRows = 20;
+        numRows = 25;
         currentPos: any;
         
         constructor(game: Tetris) {
