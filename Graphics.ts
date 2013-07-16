@@ -55,9 +55,9 @@ module Graphics {
 
     export class Canvas {
 
-        blockSize = 25;
+        blockSize = 20;
         numColumns = 10;
-        numRows = 27;
+        numRows = 20;
 
         public stage; 
         constructor() {
@@ -244,9 +244,9 @@ module Game {
         game: Tetris;
         delay = 500;
 
-        blockSize = 25;
+        blockSize = 20;
         numColumns = 10;
-        numRows = 27;
+        numRows = 20;
         currentPos: any;
         
         constructor(game: Tetris) {
