@@ -426,6 +426,7 @@ module Game {
         canvas: Graphics.Canvas;
         rect: Graphics.Square;
         pauseBtn: Graphics.Button;
+        newGameBtn: Graphics.Button;
         board: Board;
         isRunning: bool;
         score : Graphics.Label;
@@ -433,9 +434,8 @@ module Game {
         constructor() {
             this.root = new Graphics.TetrisRoot('tetris');
             this.ticker = new Graphics.Ticker(200, 2);
-            this.canvas = new Graphics.Canvas();
             this.ticker.setCallback(this);
-            this.board = new Board(this);
+            this.setBoard();
             this.isRunning = true;
             this.keyBindings();
             this.touchBindings();
@@ -444,7 +444,14 @@ module Game {
         }
 
         newGame() {
+            this.setBoard();
+            this.score.setText(this.board.score.toString());
+            this.isRunning = true;
+        }
 
+        setBoard() {
+            this.canvas = new Graphics.Canvas();
+            this.board = new Board(this);
         }
         
         keyBindings() {
@@ -456,7 +463,7 @@ module Game {
         }
 
         touchBindings() {
-            this.root.bindTouch("tap", () => {this.board.drop_all_the_way();})
+            this.root.bindTouch("doubletap", () => {this.board.drop_all_the_way();})
             this.root.bindTouch("swipeleft", () => {this.board.move_left();})
             this.root.bindTouch("swiperight", () => {this.board.move_right();})
             this.root.bindTouch("swipeup", () => {this.board.rotate_clockwise();})
@@ -465,6 +472,7 @@ module Game {
 
         buttonBindings() {
             this.pauseBtn = new Graphics.Button('pause', () => {this.pause();});
+            this.newGameBtn = new Graphics.Button('newGame', () => {this.newGame();});
         }
 
         controls() {

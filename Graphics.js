@@ -495,9 +495,8 @@ var Game;
         function Tetris() {
             this.root = new Graphics.TetrisRoot('tetris');
             this.ticker = new Graphics.Ticker(200, 2);
-            this.canvas = new Graphics.Canvas();
             this.ticker.setCallback(this);
-            this.board = new Board(this);
+            this.setBoard();
             this.isRunning = true;
             this.keyBindings();
             this.touchBindings();
@@ -505,6 +504,13 @@ var Game;
             this.controls();
         }
         Tetris.prototype.newGame = function () {
+            this.setBoard();
+            this.score.setText(this.board.score.toString());
+            this.isRunning = true;
+        };
+        Tetris.prototype.setBoard = function () {
+            this.canvas = new Graphics.Canvas();
+            this.board = new Board(this);
         };
         Tetris.prototype.keyBindings = function () {
             var _this = this;
@@ -526,7 +532,7 @@ var Game;
         };
         Tetris.prototype.touchBindings = function () {
             var _this = this;
-            this.root.bindTouch("tap", function () {
+            this.root.bindTouch("doubletap", function () {
                 _this.board.drop_all_the_way();
             });
             this.root.bindTouch("swipeleft", function () {
@@ -546,6 +552,9 @@ var Game;
             var _this = this;
             this.pauseBtn = new Graphics.Button('pause', function () {
                 _this.pause();
+            });
+            this.newGameBtn = new Graphics.Button('newGame', function () {
+                _this.newGame();
             });
         };
         Tetris.prototype.controls = function () {
