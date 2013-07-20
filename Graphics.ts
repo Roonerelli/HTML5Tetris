@@ -3,7 +3,7 @@ var createjs;
 var _;
 var Hammer;
 
-// /// <reference path="lib/hammerjs.d.ts" />
+/// <reference path="lib/touch.d.ts" />
 
 module Graphics {
 
@@ -17,10 +17,6 @@ module Graphics {
             this.gameCanvas.width = blockSize * numColumns;
             this.gameCanvas.height = blockSize * numRows;
 
-            //document.ontouchmove = function(event){
-            //    event.preventDefault();
-            //}
-
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -30,6 +26,10 @@ module Graphics {
                 if (action != undefined) {
                     action();
                 }
+            }
+
+            document.ontouchmove = function(event){
+                event.preventDefault();
             }
         }
 
@@ -80,9 +80,6 @@ module Graphics {
 
         update() {
             this.stage.update();
-        }
-        
-        remove() {
         }
 
         drawGrid(blockSize : number, numColumns : number, numRows : number) {

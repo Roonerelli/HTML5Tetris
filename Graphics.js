@@ -16,6 +16,9 @@ var Graphics;
                     action();
                 }
             };
+            document.ontouchmove = function (event) {
+                event.preventDefault();
+            };
         }
         TetrisRoot.keyBindings = {
         };
@@ -57,8 +60,6 @@ var Graphics;
         };
         Canvas.prototype.update = function () {
             this.stage.update();
-        };
-        Canvas.prototype.remove = function () {
         };
         Canvas.prototype.drawGrid = function (blockSize, numColumns, numRows) {
             for(var i = 1; i <= numColumns; i++) {
@@ -598,7 +599,7 @@ var options = {
     fps: 2,
     tickerInterval: 200
 };
-var g = new Game.Tetris(options);
+var game = new Game.Tetris(options);
 var width = options.blockSize * options.numColumns;
 document.getElementById('scoreboard').style.width = width + 'px';
 document.getElementById('newGame').style.width = width / 3 + 'px';
