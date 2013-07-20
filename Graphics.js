@@ -6,11 +6,6 @@ var Graphics;
     var TetrisRoot = (function () {
         function TetrisRoot(canvasId) {
             this.gameCanvas = document.getElementById(canvasId);
-
-            document.ontouchmove = function(event){
-                event.preventDefault();
-            }
-            
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -48,12 +43,9 @@ var Graphics;
     })();
     Graphics.Ticker = Ticker;    
     var Canvas = (function () {
-        function Canvas() {
-            this.blockSize = 20;
-            this.numColumns = 10;
-            this.numRows = 25;
+        function Canvas(blockSize, numColumns, numRows) {
             this.stage = new createjs.Stage("tetris");
-            this.drawGrid();
+            this.drawGrid(blockSize, numColumns, numRows);
         }
         Canvas.prototype.addChild = function (ele) {
             this.stage.addChild(ele);
@@ -66,22 +58,22 @@ var Graphics;
         };
         Canvas.prototype.remove = function () {
         };
-        Canvas.prototype.drawGrid = function () {
-            for(var i = 1; i <= this.numColumns; i++) {
+        Canvas.prototype.drawGrid = function (blockSize, numColumns, numRows) {
+            for(var i = 1; i <= numColumns; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(1);
-                g.moveTo(i * this.blockSize, 0);
-                g.lineTo(i * this.blockSize, this.numRows * this.blockSize);
+                g.moveTo(i * blockSize, 0);
+                g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
             }
-            for(var i = 0; i < this.numRows; i++) {
+            for(var i = 0; i < numRows; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(1);
-                g.moveTo(0, i * this.blockSize);
-                g.lineTo(this.numColumns * this.blockSize, i * this.blockSize);
+                g.moveTo(0, i * blockSize);
+                g.lineTo(numColumns * blockSize, i * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
             }
@@ -371,7 +363,6 @@ var Game;
     var Board = (function () {
         function Board(game) {
             this.score = 0;
-            this.delay = 500;
             this.blockSize = 20;
             this.numColumns = 10;
             this.numRows = 25;
@@ -497,12 +488,13 @@ var Game;
     })();
     Game.Board = Board;    
     var Tetris = (function () {
-        function Tetris() {
+        function Tetris(options) {
+            this.options = options;
             this.root = new Graphics.TetrisRoot('tetris');
-            this.ticker = new Graphics.Ticker(200, 2);
+            this.ticker = new Graphics.Ticker(options.tickerInterval, options.fps);
             this.ticker.setCallback(this);
-            this.setBoard();
             this.isRunning = true;
+            this.setBoard();
             this.keyBindings();
             this.touchBindings();
             this.buttonBindings();
@@ -514,7 +506,7 @@ var Game;
             this.isRunning = true;
         };
         Tetris.prototype.setBoard = function () {
-            this.canvas = new Graphics.Canvas();
+            this.canvas = new Graphics.Canvas(this.options.blockSize, this.options.numColumns, this.options.numRows);
             this.board = new Board(this);
         };
         Tetris.prototype.keyBindings = function () {
@@ -597,4 +589,11 @@ var Game;
     })();
     Game.Tetris = Tetris;    
 })(Game || (Game = {}));
-var g = new Game.Tetris();
+var options = {
+    blockSize: 20,
+    numColumns: 10,
+    numRows: 25,
+    fps: 2,
+    tickerInterval: 200
+};
+var g = new Game.Tetris(options);

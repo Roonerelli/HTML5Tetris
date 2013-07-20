@@ -13,6 +13,9 @@ module Graphics {
         constructor(canvasId: string) {
             this.gameCanvas = document.getElementById(canvasId);
 
+            //document.ontouchmove = function(event){
+            //    event.preventDefault();
+            //}
 
             document.body.onkeydown = function (event) {
                 event = event || window.event;
@@ -56,14 +59,11 @@ module Graphics {
 
     export class Canvas {
 
-        blockSize = 20;
-        numColumns = 10;
-        numRows = 25;
-
         public stage; 
-        constructor() {
+        constructor(blockSize : number, numColumns : number, numRows : number) {
             this.stage = new createjs.Stage("tetris");
-            this.drawGrid();
+            
+            this.drawGrid(blockSize, numColumns, numRows);
         }
 
         addChild(ele: any) {
@@ -81,25 +81,25 @@ module Graphics {
         remove() {
         }
 
-        drawGrid() {
-            for (var i = 1; i <= this.numColumns; i++) {
+        drawGrid(blockSize : number, numColumns : number, numRows : number) {
+            for (var i = 1; i <= numColumns; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(1);
 
-                g.moveTo(i*this.blockSize,0);
-                g.lineTo(i*this.blockSize,this.numRows*this.blockSize);
+                g.moveTo(i * blockSize,0);
+                g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
             }
 
-            for (var i = 0; i < this.numRows; i++) {
+            for (var i = 0; i < numRows; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(1);
 
-                g.moveTo(0, i*this.blockSize);
-                g.lineTo(this.numColumns*this.blockSize, i*this.blockSize);
+                g.moveTo(0, i * blockSize);
+                g.lineTo(numColumns * blockSize, i * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
             }
@@ -243,7 +243,6 @@ module Game {
         currentBlock: Piece;
         score = 0;
         game: Tetris;
-        delay = 500;
 
         blockSize = 20;
         numColumns = 10;
@@ -422,22 +421,24 @@ module Game {
 
     export class Tetris {
 
-        root: Graphics.TetrisRoot;
-        ticker: Graphics.Ticker;
-        canvas: Graphics.Canvas;
-        rect: Graphics.Square;
-        pauseBtn: Graphics.Button;
+        root:       Graphics.TetrisRoot;
+        ticker:     Graphics.Ticker;
+        canvas:     Graphics.Canvas;
+        rect:       Graphics.Square;
+        pauseBtn:   Graphics.Button;
         newGameBtn: Graphics.Button;
-        board: Board;
-        isRunning: bool;
-        score : Graphics.Label;
+        board:      Board;
+        isRunning:  bool;
+        score :     Graphics.Label;
+        options:    any;
 
-        constructor() {
+        constructor(options) {
+            this.options = options;
             this.root = new Graphics.TetrisRoot('tetris');
-            this.ticker = new Graphics.Ticker(200, 2);
+            this.ticker = new Graphics.Ticker(options.tickerInterval, options.fps);
             this.ticker.setCallback(this);
-            this.setBoard();
             this.isRunning = true;
+            this.setBoard();
             this.keyBindings();
             this.touchBindings();
             this.buttonBindings();
@@ -451,7 +452,7 @@ module Game {
         }
 
         setBoard() {
-            this.canvas = new Graphics.Canvas();
+            this.canvas = new Graphics.Canvas(this.options.blockSize, this.options.numColumns, this.options.numRows);
             this.board = new Board(this);
         }
         
@@ -522,4 +523,12 @@ module Game {
     }
 }
 
-var g = new Game.Tetris();
+var options = {
+    blockSize : 20,
+    numColumns : 10,
+    numRows : 25,
+    fps : 2,
+    tickerInterval : 200
+};
+
+var g = new Game.Tetris(options);
