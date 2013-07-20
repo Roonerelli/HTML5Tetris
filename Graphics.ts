@@ -10,8 +10,10 @@ module Graphics {
         static keyBindings = {};
         private gameCanvas;
 
-        constructor(canvasId: string) {
+        constructor(canvasId: string, blockSize, numColumns, numRows) {
             this.gameCanvas = document.getElementById(canvasId);
+            this.gameCanvas.width = blockSize * numColumns;
+            this.gameCanvas.height = blockSize * numRows;
 
             //document.ontouchmove = function(event){
             //    event.preventDefault();
@@ -434,7 +436,7 @@ module Game {
 
         constructor(options) {
             this.options = options;
-            this.root = new Graphics.TetrisRoot('tetris');
+            this.root = new Graphics.TetrisRoot('tetris', options.blockSize, options.numColumns, options.numRows);
             this.ticker = new Graphics.Ticker(options.tickerInterval, options.fps);
             this.ticker.setCallback(this);
             this.isRunning = true;

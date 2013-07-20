@@ -4,8 +4,10 @@ var Hammer;
 var Graphics;
 (function (Graphics) {
     var TetrisRoot = (function () {
-        function TetrisRoot(canvasId) {
+        function TetrisRoot(canvasId, blockSize, numColumns, numRows) {
             this.gameCanvas = document.getElementById(canvasId);
+            this.gameCanvas.width = blockSize * numColumns;
+            this.gameCanvas.height = blockSize * numRows;
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -490,7 +492,7 @@ var Game;
     var Tetris = (function () {
         function Tetris(options) {
             this.options = options;
-            this.root = new Graphics.TetrisRoot('tetris');
+            this.root = new Graphics.TetrisRoot('tetris', options.blockSize, options.numColumns, options.numRows);
             this.ticker = new Graphics.Ticker(options.tickerInterval, options.fps);
             this.ticker.setCallback(this);
             this.isRunning = true;
