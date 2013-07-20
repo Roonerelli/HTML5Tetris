@@ -3,6 +3,8 @@ var createjs;
 var _;
 var Hammer;
 
+// /// <reference path="lib/hammerjs.d.ts" />
+
 module Graphics {
 
     export class TetrisRoot {
@@ -246,12 +248,15 @@ module Game {
         score = 0;
         game: Tetris;
 
-        blockSize = 20;
-        numColumns = 10;
-        numRows = 25;
+        blockSize;
+        numColumns;
+        numRows;
         currentPos: any;
         
         constructor(game: Tetris) {
+            this.blockSize = game.options.blockSize;
+            this.numColumns = game.options.numColumns;
+            this.numRows = game.options.numRows;
             //this.grid = _.map(_.range(this.numRows), function(){return _.range(this.numColumns)});
 
             this.grid = new Array(this.numRows);
@@ -526,11 +531,17 @@ module Game {
 }
 
 var options = {
-    blockSize : 20,
+    blockSize : 25,
     numColumns : 10,
     numRows : 25,
     fps : 2,
     tickerInterval : 200
 };
 
-var g = new Game.Tetris(options);
+var game = new Game.Tetris(options);
+var width = options.blockSize * options.numColumns;
+document.getElementById('scoreboard').style.width = width + 'px';
+document.getElementById('newGame').style.width = width/3 + 'px';
+document.getElementById('pause').style.width = width/3 + 'px';
+document.getElementById('help').style.width = width/3 + 'px';
+

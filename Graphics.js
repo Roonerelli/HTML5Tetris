@@ -365,9 +365,9 @@ var Game;
     var Board = (function () {
         function Board(game) {
             this.score = 0;
-            this.blockSize = 20;
-            this.numColumns = 10;
-            this.numRows = 25;
+            this.blockSize = game.options.blockSize;
+            this.numColumns = game.options.numColumns;
+            this.numRows = game.options.numRows;
             this.grid = new Array(this.numRows);
             for(var i = 0; i < this.numRows; i++) {
                 this.grid[i] = new Array(this.numColumns);
@@ -592,10 +592,15 @@ var Game;
     Game.Tetris = Tetris;    
 })(Game || (Game = {}));
 var options = {
-    blockSize: 20,
+    blockSize: 25,
     numColumns: 10,
     numRows: 25,
     fps: 2,
     tickerInterval: 200
 };
 var g = new Game.Tetris(options);
+var width = options.blockSize * options.numColumns;
+document.getElementById('scoreboard').style.width = width + 'px';
+document.getElementById('newGame').style.width = width / 3 + 'px';
+document.getElementById('pause').style.width = width / 3 + 'px';
+document.getElementById('help').style.width = width / 3 + 'px';
