@@ -13,6 +13,7 @@ module Graphics {
         constructor(canvasId: string) {
             this.gameCanvas = document.getElementById(canvasId);
 
+
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;

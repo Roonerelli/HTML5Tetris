@@ -6,6 +6,11 @@ var Graphics;
     var TetrisRoot = (function () {
         function TetrisRoot(canvasId) {
             this.gameCanvas = document.getElementById(canvasId);
+
+            document.ontouchmove = function(event){
+                event.preventDefault();
+            }
+            
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
