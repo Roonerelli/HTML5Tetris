@@ -224,7 +224,7 @@ module Game {
         }
         
         static nextPiece(board: Board) {            
-            var indx = 3; // Math.floor(Math.random() * this.AllPieces.length);
+            var indx = 2; // Math.floor(Math.random() * this.AllPieces.length);
             return new Piece(this.AllPieces[indx], board);
         }
 
@@ -247,7 +247,7 @@ module Game {
             //Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), // L
             [
              [[0, 0], [0, -1], [0, 1], [1, 1]],   //1
-             [[0, 0], [-1, 0], [-1, -1], [1, 0]],  //4
+             [[0, 0], [-1, 0], [1, 0], [-1, 1]],  //4
              [[0, 0], [0, 1], [0, -1], [-1, -1]], //3
              [[0, 0], [-1, 0], [1, 0], [1, -1]],  //2
             ],

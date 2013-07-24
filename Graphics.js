@@ -203,7 +203,7 @@ var Game;
         };
 
         Piece.nextPiece = function (board) {
-            var indx = 3;
+            var indx = 2;
             return new Piece(this.AllPieces[indx], board);
         };
 
@@ -223,7 +223,7 @@ var Game;
             ],
             [
                 [[0, 0], [0, -1], [0, 1], [1, 1]],
-                [[0, 0], [-1, 0], [-1, -1], [1, 0]],
+                [[0, 0], [-1, 0], [1, 0], [-1, 1]],
                 [[0, 0], [0, 1], [0, -1], [-1, -1]],
                 [[0, 0], [-1, 0], [1, 0], [1, -1]]
             ],
