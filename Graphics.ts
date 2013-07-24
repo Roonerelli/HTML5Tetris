@@ -4,6 +4,8 @@ var _;
 var Hammer;
 
 /// <reference path="lib/touch.d.ts" />
+/// <reference path="lib/Hammerjs.d.ts" />
+
 
 module Graphics {
 
@@ -28,9 +30,9 @@ module Graphics {
                 }
             }
 
-            document.ontouchmove = function(event){
-                event.preventDefault();
-            }
+            //document.ontouchmove = function(event){
+            //    event.preventDefault();
+            //}
         }
 
         bindKey(keyChar : number, action : Function) {
@@ -192,7 +194,7 @@ module Game {
         }
 
         move(deltaX, deltaY, deltaRotation) {
-            this.moved = true;
+            var moved = true;
             var potential = this.allRotations[(this.rotationIndex + deltaRotation) % this.allRotations.length];
 
             for (var index = 0; index < potential.length; ++index) {
@@ -200,17 +202,17 @@ module Game {
                 if(!this.board.emptyAt([
                     posns[0] + deltaX + this.basePosition[0], 
                     posns[1] + deltaY + this.basePosition[1]])) {
-                    this.moved = false;
+                    moved = false;
                 }
             }
 
-            if (this.moved) {
+            if (moved) {
                 this.basePosition[0] += deltaX;
                 this.basePosition[1] += deltaY;
                 this.rotationIndex = (this.rotationIndex + deltaRotation) % this.allRotations.length;
             }
 
-            return this.moved;
+            return moved;
         }
 
         static rotations (pointArray) {
@@ -222,18 +224,37 @@ module Game {
         }
         
         static nextPiece(board: Board) {            
-            var indx = Math.floor(Math.random() * this.AllPieces.length);
+            var indx = 3; // Math.floor(Math.random() * this.AllPieces.length);
             return new Piece(this.AllPieces[indx], board);
         }
 
-        static AllPieces = [[[[0, 0], [1, 0], [0, 1], [1, 1]]], //# square (only needs one)
-            Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), // T
-            [[[0, 0], [-1, 0], [1, 0], [2, 0]],     // long
-                [[0, 0], [0, -1], [0, 1], [0, 2]]],
-            Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), // L
-            Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), // inverted L
+        static AllPieces = 
+        [
+            [
+             [[0, 0], [1, 0], [0, 1], [1, 1]]
+            ], //# square (only needs one)
+            [
+             [[0, 0], [-1, 0], [1, 0], [2, 0]],
+             [[0, 0],[0, -1], [0, 1], [0, 2]]
+            ], // long
+            //Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), // T
+            [
+             [[0, 0], [-1, 0], [1, 0], [0, -1]], //1
+             [[0, 0], [1, 0], [0, 1], [0, -1]],  //4
+             [[0, 0], [-1, 0], [1, 0], [0, 1]],  //3
+             [[0, 0], [-1, 0], [0, 1], [0, -1]], //2
+            ], // T
+            //Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), // L
+            [
+             [[0, 0], [0, -1], [0, 1], [1, 1]],   //1
+             [[0, 0], [-1, 0], [-1, -1], [1, 0]],  //4
+             [[0, 0], [0, 1], [0, -1], [-1, -1]], //3
+             [[0, 0], [-1, 0], [1, 0], [1, -1]],  //2
+            ],
+            //Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), // inverted L
             Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), // S
-            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])]; // Z
+            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]) // Z
+        ]; 
 
         static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 'Orange', 'Green'];
     }
