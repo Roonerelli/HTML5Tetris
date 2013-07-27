@@ -33,6 +33,9 @@ module Graphics {
             //document.ontouchmove = function(event){
             //    event.preventDefault();
             //}
+
+            document.getElementById('scoreboard').style.width = blockSize * numColumns + 'px';
+
         }
 
         bindKey(keyChar : number, action : Function) {
@@ -224,7 +227,7 @@ module Game {
         }
         
         static nextPiece(board: Board) {            
-            var indx = 2; // Math.floor(Math.random() * this.AllPieces.length);
+            var indx = Math.floor(Math.random() * this.AllPieces.length);
             return new Piece(this.AllPieces[indx], board);
         }
 
@@ -232,26 +235,23 @@ module Game {
         [
             [
              [[0, 0], [1, 0], [0, 1], [1, 1]]
-            ], //# square (only needs one)
+            ], // square 
             [
              [[0, 0], [-1, 0], [1, 0], [2, 0]],
              [[0, 0],[0, -1], [0, 1], [0, 2]]
             ], // long
-            //Piece.rotations([[0, 0], [-1, 0], [1, 0], [0, -1]]), // T
             [
              [[0, 0], [-1, 0], [1, 0], [0, -1]], //1
              [[0, 0], [1, 0], [0, 1], [0, -1]],  //4
              [[0, 0], [-1, 0], [1, 0], [0, 1]],  //3
              [[0, 0], [-1, 0], [0, 1], [0, -1]], //2
             ], // T
-            //Piece.rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), // L
             [
              [[0, 0], [0, -1], [0, 1], [1, 1]],   //1
              [[0, 0], [-1, 0], [1, 0], [-1, 1]],  //4
              [[0, 0], [0, 1], [0, -1], [-1, -1]], //3
              [[0, 0], [-1, 0], [1, 0], [1, -1]],  //2
-            ],
-            //Piece.rotations([[0, 0], [0, -1], [0, 1], [-1, 1]]), // inverted L
+            ], //L
             Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), // S
             Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]) // Z
         ]; 
@@ -514,6 +514,7 @@ module Game {
 
         pause() {
             Graphics.Ticker.pause();
+            // this.isRunning = false; TODO: uncomment 
         }
 
         drawPiece(piece: Piece, old) {
@@ -557,8 +558,9 @@ var options = {
 };
 
 var game = new Game.Tetris(options);
+
+
 var width = options.blockSize * options.numColumns;
-document.getElementById('scoreboard').style.width = width + 'px';
 document.getElementById('newGame').style.width = width/3 + 'px';
 document.getElementById('pause').style.width = width/3 + 'px';
 document.getElementById('help').style.width = width/3 + 'px';

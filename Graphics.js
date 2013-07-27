@@ -20,6 +20,12 @@ var Graphics;
                     action();
                 }
             };
+
+            document.ontouchmove = function(event){
+                event.preventDefault();
+            }
+
+            document.getElementById('scoreboard').style.width = blockSize * numColumns + 'px';
         }
         TetrisRoot.prototype.bindKey = function (keyChar, action) {
             TetrisRoot.keyBindings[keyChar] = action;
@@ -203,7 +209,7 @@ var Game;
         };
 
         Piece.nextPiece = function (board) {
-            var indx = 2;
+            var indx = Math.floor(Math.random() * this.AllPieces.length);
             return new Piece(this.AllPieces[indx], board);
         };
 
@@ -522,8 +528,8 @@ var options = {
 };
 
 var game = new Game.Tetris(options);
+
 var width = options.blockSize * options.numColumns;
-document.getElementById('scoreboard').style.width = width + 'px';
 document.getElementById('newGame').style.width = width / 3 + 'px';
 document.getElementById('pause').style.width = width / 3 + 'px';
 document.getElementById('help').style.width = width / 3 + 'px';
