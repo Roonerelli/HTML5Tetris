@@ -1,6 +1,7 @@
 var createjs;
 var _;
 var Hammer;
+var picoModal;
 
 var Graphics;
 (function (Graphics) {
@@ -20,10 +21,6 @@ var Graphics;
                     action();
                 }
             };
-
-            document.ontouchmove = function(event){
-                event.preventDefault();
-            }
 
             document.getElementById('scoreboard').style.width = blockSize * numColumns + 'px';
         }
@@ -472,6 +469,9 @@ var Game;
             this.newGameBtn = new Graphics.Button('newGame', function () {
                 _this.newGame();
             });
+            this.helpBtn = new Graphics.Button('help', function () {
+                _this.showHelp();
+            });
         };
 
         Tetris.prototype.controls = function () {
@@ -479,13 +479,45 @@ var Game;
         };
 
         Tetris.prototype.tick = function () {
-            if (this.isRunning && !this.board.gameOver()) {
-                this.board.run();
+            if (this.isRunning) {
+                if (this.board.gameOver()) {
+                    this.gameOver();
+                } else {
+                    this.board.run();
+                }
             }
         };
 
         Tetris.prototype.pause = function () {
             Graphics.Ticker.pause();
+        };
+
+        Tetris.prototype.gameOver = function () {
+            this.isRunning = false;
+
+            picoModal({
+                content: "Game Over. ",
+                overlayStyles: {
+                    backgroundColor: "#ccc",
+                    opacity: 0.55
+                }
+            });
+        };
+
+        Tetris.prototype.showHelp = function () {
+            var self = this;
+            this.pause();
+            var modal = picoModal({
+                content: "Swipe up to rotate.<br/> Swipe left and right to move.<br/> Double tap to drop. ",
+                overlayStyles: {
+                    backgroundColor: "#ddd",
+                    opacity: 0.75
+                }
+            });
+
+            modal.onClose(function () {
+                self.pause();
+            });
         };
 
         Tetris.prototype.drawPiece = function (piece, old) {

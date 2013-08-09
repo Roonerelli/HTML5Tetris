@@ -2,6 +2,7 @@
 var createjs;
 var _;
 var Hammer;
+var picoModal;
 
 /// <reference path="lib/touch.d.ts" />
 /// <reference path="lib/Hammerjs.d.ts" />
@@ -179,7 +180,7 @@ module Game {
         constructor(pointArray, board : Board) {
             this.allRotations = pointArray;
             var rotIndx = Math.floor(Math.random() * this.allRotations.length);
-            this.rotationIndex = rotIndx; //TODO:randomize
+            this.rotationIndex = rotIndx;
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx]; 
             this.basePosition = [5, 0];
@@ -452,6 +453,7 @@ module Game {
         rect:       Graphics.Square;
         pauseBtn:   Graphics.Button;
         newGameBtn: Graphics.Button;
+        helpBtn:    Graphics.Button;
         board:      Board;
         isRunning:  bool;
         score :     Graphics.Label;
@@ -500,6 +502,7 @@ module Game {
         buttonBindings() {
             this.pauseBtn = new Graphics.Button('pause', () => {this.pause();});
             this.newGameBtn = new Graphics.Button('newGame', () => {this.newGame();});
+            this.helpBtn = new Graphics.Button('help', () => {this.showHelp();});
         }
 
         controls() {
@@ -507,14 +510,47 @@ module Game {
         }
 
         tick() {
-            if (this.isRunning && !this.board.gameOver()) {
-                this.board.run();
+            if (this.isRunning) {
+                if(this.board.gameOver()) {
+                    this.gameOver();
+                }
+                else {
+                    this.board.run();
+                }
             }
         }
 
         pause() {
             Graphics.Ticker.pause();
             // this.isRunning = false; TODO: uncomment 
+        }
+
+        gameOver() {
+            this.isRunning = false;
+            
+            picoModal({
+                content: "Game Over. ",
+                overlayStyles: {
+                    backgroundColor: "#ccc",
+                    opacity: 0.55
+                }
+            });
+        }
+
+        showHelp() {
+            var self = this;
+            this.pause();
+            var modal = picoModal({
+                content: "Swipe up to rotate.<br/> Swipe left and right to move.<br/> Double tap to drop. ",
+                overlayStyles: {
+                    backgroundColor: "#ddd",
+                    opacity: 0.75
+                }
+            });
+
+            modal.onClose(function () {
+                self.pause();
+            });
         }
 
         drawPiece(piece: Piece, old) {
