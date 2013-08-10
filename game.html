@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>HTML 5 Tetris</title>
-    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="css/game.css">
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta id="viewport" name="viewport" content ="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,14 +16,32 @@
             Your browser does not support canvas.
         </canvas>
         <div id="controls">
-            <button type="submit" id="newGame">New</button>
-            <button type="submit" id="pause">Pause</button>
-            <button type="submit" id="help">Help</button>
+            <button type="submit" id="newGame">New</button><button type="submit" id="pause">Pause</button><button type="submit" id="help">Help</button><button type="submit" id="about">About</button>
         </div>
-    </div>    
-    <footer></footer>
 
-    <!--<script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
+
+        <div id="popups" style="display: none;">
+            <div id="instructions">
+                <p>
+                    <h2>Touch</h2>
+                    <ul id="instList">
+                        <li><span class="instLabel">Rotate</span> : Swipe up</li>
+                        <li><span class="instLabel">Move</span>   : Swipe left / Swipe right</li> 
+                        <li><span class="instLabel">Drop</span>   : Double tap </li>
+                    </ul>
+                </p>
+                <p>
+                    <h2>Keyboard</h2>
+                    <ul id="instList">
+                        <li><span class="instLabel">Rotate</span> : Up Arrow</li>
+                        <li><span class="instLabel">Move</span>   : Left Arrow / Right Arrow</li>
+                        <li><span class="instLabel">Drop</span>   : Space </li>
+                    </ul>
+                </p>            
+            </div>
+        </div>
+
+<!--<script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>-->
     <!--<script type="text/javascript" src="lib/underscore.js"></script>-->
     <script type="text/javascript" src="lib/easeljs.js"></script>
@@ -31,5 +49,8 @@
     <script type="text/javascript" src="lib/lodash.js"></script>
     <script type="text/javascript" src="lib/picoModal.js"></script>
     <script type="text/javascript" src="graphics.js"></script>    
+
+
+    </div>
 </body>
 </html>

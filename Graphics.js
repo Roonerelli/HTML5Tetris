@@ -22,7 +22,15 @@ var Graphics;
                 }
             };
 
-            document.getElementById('scoreboard').style.width = blockSize * numColumns + 'px';
+            var width = blockSize * numColumns;
+
+            document.getElementById('scoreboard').style.width = width + 'px';
+            document.getElementById('container').style.width = width + 'px';
+            document.getElementById('controls').style.width = width + 'px';
+            document.getElementById('newGame').style.width = width / 4 + 'px';
+            document.getElementById('pause').style.width = width / 4 + 'px';
+            document.getElementById('help').style.width = width / 4 + 'px';
+            document.getElementById('about').style.width = width / 4 + 'px';
         }
         TetrisRoot.prototype.bindKey = function (keyChar, action) {
             TetrisRoot.keyBindings[keyChar] = action;
@@ -508,7 +516,7 @@ var Game;
             var self = this;
             this.pause();
             var modal = picoModal({
-                content: "Swipe up to rotate.<br/> Swipe left and right to move.<br/> Double tap to drop. ",
+                content: document.getElementById('instructions').innerHTML,
                 overlayStyles: {
                     backgroundColor: "#ddd",
                     opacity: 0.75
@@ -560,8 +568,3 @@ var options = {
 };
 
 var game = new Game.Tetris(options);
-
-var width = options.blockSize * options.numColumns;
-document.getElementById('newGame').style.width = width / 3 + 'px';
-document.getElementById('pause').style.width = width / 3 + 'px';
-document.getElementById('help').style.width = width / 3 + 'px';
