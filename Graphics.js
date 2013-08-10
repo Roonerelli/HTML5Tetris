@@ -22,6 +22,10 @@ var Graphics;
                 }
             };
 
+            document.ontouchmove = function(event){
+                event.preventDefault();
+            }
+
             var width = blockSize * numColumns;
 
             document.getElementById('scoreboard').style.width = width + 'px';
