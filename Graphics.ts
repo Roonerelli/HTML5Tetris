@@ -463,7 +463,8 @@ module Game {
         helpBtn:    Graphics.Button;
         board:      Board;
         isRunning:  bool;
-        score :     Graphics.Label;
+        score:      Graphics.Label;
+        hiScore:    Graphics.Label;
         options:    any;
 
         constructor(options) {
@@ -475,13 +476,12 @@ module Game {
             this.keyBindings();
             this.touchBindings();
             this.buttonBindings();
-            this.controls();
+            this.scores();
             this.isRunning = false;
         }
 
         newGame() {
             this.setBoard();
-            this.score.setText(this.board.score.toString());
             this.isRunning = true;
         }
 
@@ -513,8 +513,12 @@ module Game {
             this.helpBtn = new Graphics.Button('help', () => {this.showHelp();});
         }
 
-        controls() {
-            this.score = new Graphics.Label('scoreboard');
+        scores() {
+            this.score = new Graphics.Label('currentScore');
+            this.hiScore = new Graphics.Label('hiScore');
+            var hi = localStorage.getItem('hiScore');
+            this.hiScore.setText(hi || '0');
+            this.score.setText('0');
         }
 
         tick() {
@@ -535,9 +539,10 @@ module Game {
 
         gameOver() {
             this.isRunning = false;
+            var content =  this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
 
             picoModal({
-                content: "Game Over. ",
+                content: document.getElementById(content).innerHTML,
                 overlayStyles: {
                     backgroundColor: "#ccc",
                     opacity: 0.55
@@ -549,7 +554,7 @@ module Game {
             var self = this;
             this.pause();
             var modal = picoModal({
-                content: document.getElementById('instructions').innerHTML ,
+                content: document.getElementById('instructions').innerHTML,
                 overlayStyles: {
                     backgroundColor: "#ddd",
                     opacity: 0.75
@@ -559,6 +564,18 @@ module Game {
             modal.onClose(function () {
                 self.pause();
             });
+        }
+
+        setHiScore() {
+            var hi = localStorage.getItem('hiScore');
+            hi = hi || 0;
+
+            if (this.board.score > parseInt(hi)) {
+                localStorage.setItem('hiScore', this.board.score.toString());
+                this.hiScore.setText(this.board.score.toString());        
+                return true;
+            }
+            return false;
         }
 
         drawPiece(piece: Piece, old) {

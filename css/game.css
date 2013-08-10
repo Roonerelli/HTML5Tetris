@@ -73,14 +73,24 @@ body
     margin:0px;    
 }
 
-#scoreboard {
+#scoreboard, #hiScore, #currentScore {
     border: 1px solid #000000;
     background-color:#333333;
+    height: 40px;
+}
+
+#hiScore, #currentScore {
+    border: 0px;
+    background-color:#333333;
     color: orange;
-    width: 200px;
+    display: inline-block;
+    width: 45%;
     height: 40px;
     font:36px arial,sans-serif;
-    text-align: right;;
+}
+
+#currentScore {
+    text-align: right;
 }
 
 #controls {

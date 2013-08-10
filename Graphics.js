@@ -417,12 +417,11 @@ var Game;
             this.keyBindings();
             this.touchBindings();
             this.buttonBindings();
-            this.controls();
+            this.scores();
             this.isRunning = false;
         }
         Tetris.prototype.newGame = function () {
             this.setBoard();
-            this.score.setText(this.board.score.toString());
             this.isRunning = true;
         };
 
@@ -483,8 +482,12 @@ var Game;
             });
         };
 
-        Tetris.prototype.controls = function () {
-            this.score = new Graphics.Label('scoreboard');
+        Tetris.prototype.scores = function () {
+            this.score = new Graphics.Label('currentScore');
+            this.hiScore = new Graphics.Label('hiScore');
+            var hi = localStorage.getItem('hiScore');
+            this.hiScore.setText(hi || '0');
+            this.score.setText('0');
         };
 
         Tetris.prototype.tick = function () {
@@ -503,9 +506,10 @@ var Game;
 
         Tetris.prototype.gameOver = function () {
             this.isRunning = false;
+            var content = this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
 
             picoModal({
-                content: "Game Over. ",
+                content: document.getElementById(content).innerHTML,
                 overlayStyles: {
                     backgroundColor: "#ccc",
                     opacity: 0.55
@@ -527,6 +531,18 @@ var Game;
             modal.onClose(function () {
                 self.pause();
             });
+        };
+
+        Tetris.prototype.setHiScore = function () {
+            var hi = localStorage.getItem('hiScore');
+            hi = hi || 0;
+
+            if (this.board.score > parseInt(hi)) {
+                localStorage.setItem('hiScore', this.board.score.toString());
+                this.hiScore.setText(this.board.score.toString());
+                return true;
+            }
+            return false;
         };
 
         Tetris.prototype.drawPiece = function (piece, old) {

@@ -11,7 +11,10 @@
 </head>
 <body>
     <div id="container">
-        <div id="scoreboard"></div>
+        <div id="scoreboard">
+            <span id="hiScore"></span>
+            <span id="currentScore"></span>
+        </div>
         <canvas id="tetris">
             Your browser does not support canvas.
         </canvas>
@@ -40,6 +43,13 @@
                     </ul>
                 </p>            
             </div>
+            <div id="hiScoreMsg">
+                <p>Game Over. You got a new high score</p>
+            </div>
+            <div id="gameOverMsg">
+                <p>Game Over.</p>
+            </div>
+            
         </div>
 
 <!--<script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
