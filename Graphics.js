@@ -22,10 +22,6 @@ var Graphics;
                 }
             };
 
-            document.ontouchmove = function(event){
-                event.preventDefault();
-            }
-
             var width = blockSize * numColumns;
 
             document.getElementById('scoreboard').style.width = width + 'px';
@@ -417,12 +413,12 @@ var Game;
             this.root = new Graphics.TetrisRoot('tetris', options.blockSize, options.numColumns, options.numRows);
             this.ticker = new Graphics.Ticker(options.tickerInterval, options.fps);
             this.ticker.setCallback(this);
-            this.isRunning = true;
             this.setBoard();
             this.keyBindings();
             this.touchBindings();
             this.buttonBindings();
             this.controls();
+            this.isRunning = false;
         }
         Tetris.prototype.newGame = function () {
             this.setBoard();
@@ -432,6 +428,7 @@ var Game;
 
         Tetris.prototype.setBoard = function () {
             this.canvas = new Graphics.Canvas(this.options.blockSize, this.options.numColumns, this.options.numRows);
+            this.canvas.update();
             this.board = new Board(this);
         };
 
