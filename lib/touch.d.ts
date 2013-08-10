@@ -7,13 +7,13 @@ interface Touch {
     clientY:number;
     pageX:number;
     pageY:number;
-};
+}
 
 interface TouchList {
     length:number;
     item (index:number):Touch;
     identifiedTouch(identifier:number):Touch;
-};
+}
 
 interface TouchEvent extends UIEvent {
     touches:TouchList;
@@ -24,7 +24,7 @@ interface TouchEvent extends UIEvent {
     ctrlKey:bool;
     shiftKey:bool;
     initTouchEvent (type:string, canBubble:bool, cancelable:bool, view:AbstractView, detail:number, ctrlKey:bool, altKey:bool, shiftKey:bool, metaKey:bool, touches:TouchList, targetTouches:TouchList, changedTouches:TouchList);
-};
+}
 
 declare var TouchEvent: {
     prototype: TouchEvent;

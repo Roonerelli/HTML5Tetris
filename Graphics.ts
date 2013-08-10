@@ -1,11 +1,9 @@
+/// <reference path="lib/touch.d.ts" />
 
 var createjs;
 var _;
 var Hammer;
 var picoModal;
-
-/// <reference path="lib/touch.d.ts" />
-/// <reference path="lib/Hammerjs.d.ts" />
 
 
 module Graphics {
@@ -31,9 +29,9 @@ module Graphics {
                 }
             }
 
-            //document.ontouchmove = function(event){
-            //    event.preventDefault();
-            //}
+            document.ontouchmove = function(event){
+                event.preventDefault();
+            }
 
             var width = blockSize * numColumns;
 
