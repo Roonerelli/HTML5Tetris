@@ -97,18 +97,17 @@ body
 
 .instLabel { 
     float: left;
-    width: 55px;
+    width: 75px;
 }
 
 button {
     border: 1px solid #000000;
     padding:0px;
     margin:0px;
-    
     font: 24px 'BebasNeueRegular', Arial, sans-serif;
     background-color:#333333;
     color: orange;
-    width:65px;
+    word-spacing:0;
     height: 40px;
 }
 

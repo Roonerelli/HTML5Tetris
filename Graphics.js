@@ -559,8 +559,19 @@ var Game;
     Game.Tetris = Tetris;
 })(Game || (Game = {}));
 
+var screenHeight = document.documentElement.clientHeight;
+var blockSize;
+
+if (screenHeight <= 460) {
+    blockSize = 15;
+} else if (screenHeight > 460 && screenHeight <= 800) {
+    blockSize = 25;
+} else if (screenHeight > 800) {
+    blockSize = 30;
+}
+
 var options = {
-    blockSize: 25,
+    blockSize: blockSize,
     numColumns: 10,
     numRows: 25,
     fps: 2,
