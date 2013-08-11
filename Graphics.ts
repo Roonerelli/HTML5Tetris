@@ -116,7 +116,7 @@ module Graphics {
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(0.2);
 
-                g.moveTo((i * blockSize) + 2,0);
+                g.moveTo((i * blockSize),0);
                 g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
@@ -239,15 +239,7 @@ module Game {
             }
 
             return moved;
-        }
-
-        static rotations (pointArray) {
-            var rotate1 = _.map(pointArray, (point) => { return [-point[1], point[0]]; })
-            var rotate2 = _.map(pointArray, (point) => { return [-point[0], point[1]]; })
-            var rotate3 = _.map(pointArray, (point) => { return [point[1], -point[0]]; })
-
-            return [pointArray, rotate1, rotate2, rotate3];
-        }
+        }        
         
         static nextPiece(board: Board) {            
             var indx = Math.floor(Math.random() * this.AllPieces.length);
@@ -264,19 +256,29 @@ module Game {
              [[0, 0],[0, -1], [0, 1], [0, 2]]
             ], // long
             [
-             [[0, 0], [-1, 0], [1, 0], [0, -1]], //1
-             [[0, 0], [1, 0], [0, 1], [0, -1]],  //4
-             [[0, 0], [-1, 0], [1, 0], [0, 1]],  //3
-             [[0, 0], [-1, 0], [0, 1], [0, -1]], //2
+             [[0, 0], [-1, 0], [1, 0], [0, -1]], 
+             [[0, 0], [1, 0], [0, 1], [0, -1]],  
+             [[0, 0], [-1, 0], [1, 0], [0, 1]],  
+             [[0, 0], [-1, 0], [0, 1], [0, -1]], 
             ], // T
             [
-             [[0, 0], [0, -1], [0, 1], [1, 1]],   //1
-             [[0, 0], [-1, 0], [1, 0], [-1, 1]],  //4
-             [[0, 0], [0, 1], [0, -1], [-1, -1]], //3
-             [[0, 0], [-1, 0], [1, 0], [1, -1]],  //2
+             [[0, 0], [0, -1], [0, 1], [1, 1]],   
+             [[0, 0], [-1, 0], [1, 0], [-1, 1]],  
+             [[0, 0], [0, 1], [0, -1], [-1, -1]], 
+             [[0, 0], [-1, 0], [1, 0], [1, -1]],  
             ], //L
-            Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]), // S
-            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]]) // Z
+            [
+             [[0, 0], [-1, 0], [0, -1], [1, -1]],
+             [[0, 0], [0, 1], [-1, 0], [-1, -1]],
+             [[0, 0], [0, 1], [-1, 1], [1, 0]],
+             [[0, 0], [1, 0], [1, 1], [0, -1]]
+            ], // S
+            [
+             [[0, 0], [1, 0], [0, -1], [-1, -1]],
+             [[0, 0], [-1, 0], [-1, 1], [0, -1]],
+             [[0, 0], [0, 1], [1, 1], [-1, 0]],
+             [[0, 0], [0, 1], [1, 0], [1, -1]]
+            ] // Z
         ]; 
 
         static AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 'Orange', 'Green'];

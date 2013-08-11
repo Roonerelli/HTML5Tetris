@@ -106,7 +106,7 @@ var Graphics;
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(0.2);
 
-                g.moveTo((i * blockSize) + 2, 0);
+                g.moveTo((i * blockSize), 0);
                 g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
@@ -180,7 +180,7 @@ var Game;
             this.moved = true;
             this.allRotations = pointArray;
             var rotIndx = Math.floor(Math.random() * this.allRotations.length);
-            this.rotationIndex = rotIndx;
+            this.rotationIndex = 0;
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx];
             this.basePosition = [5, 0];
@@ -234,7 +234,7 @@ var Game;
         };
 
         Piece.nextPiece = function (board) {
-            var indx = Math.floor(Math.random() * this.AllPieces.length);
+            var indx = 5;
             return new Piece(this.AllPieces[indx], board);
         };
 
@@ -258,8 +258,18 @@ var Game;
                 [[0, 0], [0, 1], [0, -1], [-1, -1]],
                 [[0, 0], [-1, 0], [1, 0], [1, -1]]
             ],
-            Piece.rotations([[0, 0], [-1, 0], [0, -1], [1, -1]]),
-            Piece.rotations([[0, 0], [1, 0], [0, -1], [-1, -1]])
+            [
+                [[0, 0], [-1, 0], [0, -1], [1, -1]],
+                [[0, 0], [0, 1], [-1, 0], [-1, -1]],
+                [[0, 0], [0, 1], [-1, 1], [1, 0]],
+                [[0, 0], [1, 0], [1, 1], [0, -1]]
+            ],
+            [
+                [[0, 0], [1, 0], [0, -1], [-1, -1]],
+                [[0, 0], [-1, 0], [-1, 1], [0, -1]],
+                [[0, 0], [0, 1], [1, 1], [-1, 0]],
+                [[0, 0], [0, 1], [1, 0], [1, -1]]
+            ]
         ];
 
         Piece.AllColors = ['Aqua', 'Blue', 'red', 'DarkViolet', 'Yellow', 'Orange', 'Green'];
