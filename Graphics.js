@@ -128,12 +128,12 @@ var Graphics;
     Graphics.Canvas = Canvas;
 
     var Square = (function () {
-        function Square(canvas, x, y, w, h, color) {
+        function Square(canvas, x, y, w, color) {
             this.rect = new createjs.Shape();
             this.rect.graphics.beginStroke("#000");
             this.rect.graphics.setStrokeStyle(1);
             this.rect.snapToPixel = true;
-            this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
+            this.rect.graphics.beginFill(color).drawRect(x, y, w, w);
 
             this.canvas = canvas;
             this.canvas.addChild(this.rect);
@@ -180,7 +180,7 @@ var Game;
             this.moved = true;
             this.allRotations = pointArray;
             var rotIndx = Math.floor(Math.random() * this.allRotations.length);
-            this.rotationIndex = 0;
+            this.rotationIndex = rotIndx;
             var indx = Math.floor(Math.random() * Piece.AllColors.length);
             this.color = Piece.AllColors[indx];
             this.basePosition = [5, 0];
@@ -219,22 +219,8 @@ var Game;
             return moved;
         };
 
-        Piece.rotations = function (pointArray) {
-            var rotate1 = _.map(pointArray, function (point) {
-                return [-point[1], point[0]];
-            });
-            var rotate2 = _.map(pointArray, function (point) {
-                return [-point[0], point[1]];
-            });
-            var rotate3 = _.map(pointArray, function (point) {
-                return [point[1], -point[0]];
-            });
-
-            return [pointArray, rotate1, rotate2, rotate3];
-        };
-
         Piece.nextPiece = function (board) {
-            var indx = 5;
+            var indx = Math.floor(Math.random() * this.AllPieces.length);
             return new Piece(this.AllPieces[indx], board);
         };
 
@@ -603,7 +589,7 @@ var Game;
             for (var i = 0; i < blocks.length; i++) {
                 var block = blocks[i];
 
-                results.push(new Graphics.Square(this.canvas, start[0] * size + block[0] * size + 3, start[1] * size + block[1] * size, this.board.blockSize, this.board.blockSize, piece.color));
+                results.push(new Graphics.Square(this.canvas, start[0] * size + block[0] * size, start[1] * size + block[1] * size, this.board.blockSize, piece.color));
             }
 
             return results;

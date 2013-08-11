@@ -140,13 +140,13 @@ module Graphics {
         public rect;
         private canvas : Canvas;
 
-        constructor(canvas: Canvas, x, y, w, h, color) {
+        constructor(canvas: Canvas, x, y, w, color) {
             
             this.rect = new createjs.Shape();
             this.rect.graphics.beginStroke("#000");
             this.rect.graphics.setStrokeStyle(1);
             this.rect.snapToPixel = true;
-            this.rect.graphics.beginFill(color).drawRect(x, y, w, h);
+            this.rect.graphics.beginFill(color).drawRect(x, y, w, w);
 
             this.canvas = canvas;
             this.canvas.addChild(this.rect);
@@ -624,9 +624,9 @@ module Game {
                 var block = blocks[i];
 
                 results.push(new Graphics.Square(this.canvas, 
-                                    start[0] * size + block[0]*size + 3,
+                                    start[0] * size + block[0]*size,
                                     start[1] * size + block[1]*size,
-                                    this.board.blockSize, this.board.blockSize, piece.color));
+                                    this.board.blockSize, piece.color));
             }
 
             return results;
