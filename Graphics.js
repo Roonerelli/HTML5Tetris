@@ -7,10 +7,6 @@ var Graphics;
 (function (Graphics) {
     var TetrisRoot = (function () {
         function TetrisRoot(canvasId, blockSize, numColumns, numRows) {
-            this.gameCanvas = document.getElementById(canvasId);
-            this.gameCanvas.width = blockSize * numColumns;
-            this.gameCanvas.height = blockSize * numRows;
-
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -26,7 +22,13 @@ var Graphics;
                 event.preventDefault();
             };
 
+            this.reSize(canvasId, blockSize, numColumns, numRows);
+        }
+        TetrisRoot.prototype.reSize = function (canvasId, blockSize, numColumns, numRows) {
             var width = blockSize * numColumns;
+            this.gameCanvas = document.getElementById(canvasId);
+            this.gameCanvas.width = width;
+            this.gameCanvas.height = blockSize * numRows;
 
             document.getElementById('scoreboard').style.width = width + 'px';
             document.getElementById('container').style.width = width + 'px';
@@ -35,7 +37,8 @@ var Graphics;
             document.getElementById('pause').style.width = width / 4 + 'px';
             document.getElementById('help').style.width = width / 4 + 'px';
             document.getElementById('about').style.width = width / 4 + 'px';
-        }
+        };
+
         TetrisRoot.prototype.bindKey = function (keyChar, action) {
             TetrisRoot.keyBindings[keyChar] = action;
         };
@@ -88,7 +91,7 @@ var Graphics;
             for (var i = 1; i <= numColumns; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
-                g.setStrokeStyle(1);
+                g.setStrokeStyle(0.2);
 
                 g.moveTo(i * blockSize, 0);
                 g.lineTo(i * blockSize, numRows * blockSize);
@@ -99,7 +102,7 @@ var Graphics;
             for (var i = 0; i < numRows; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
-                g.setStrokeStyle(1);
+                g.setStrokeStyle(0.2);
 
                 g.moveTo(0, i * blockSize);
                 g.lineTo(numColumns * blockSize, i * blockSize);
@@ -582,6 +585,8 @@ var Game;
 
 var screenHeight = document.documentElement.clientHeight;
 var blockSize;
+
+document.getElementById('forkMe').style.display = 'none';
 
 if (screenHeight <= 460) {
     blockSize = 15;

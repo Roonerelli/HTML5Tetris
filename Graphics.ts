@@ -14,10 +14,7 @@ module Graphics {
         private gameCanvas;
 
         constructor(canvasId: string, blockSize, numColumns, numRows) {
-            this.gameCanvas = document.getElementById(canvasId);
-            this.gameCanvas.width = blockSize * numColumns;
-            this.gameCanvas.height = blockSize * numRows;
-
+            
             document.body.onkeydown = function (event) {
                 event = event || window.event;
                 var keycode = event.charCode || event.keyCode;
@@ -33,8 +30,15 @@ module Graphics {
                 event.preventDefault();
             }
 
-            var width = blockSize * numColumns;
+            this.reSize(canvasId, blockSize, numColumns, numRows);            
+        }
 
+        reSize(canvasId, blockSize, numColumns, numRows) {
+            var width = blockSize * numColumns;
+            this.gameCanvas = document.getElementById(canvasId);
+            this.gameCanvas.width =  width;
+            this.gameCanvas.height = blockSize * numRows;
+            
             document.getElementById('scoreboard').style.width = width + 'px';
             document.getElementById('container').style.width = width + 'px';
             document.getElementById('controls').style.width = width + 'px';
@@ -97,7 +101,7 @@ module Graphics {
             for (var i = 1; i <= numColumns; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
-                g.setStrokeStyle(1);
+                g.setStrokeStyle(0.2);
 
                 g.moveTo(i * blockSize,0);
                 g.lineTo(i * blockSize, numRows * blockSize);
@@ -108,7 +112,7 @@ module Graphics {
             for (var i = 0; i < numRows; i++) {
                 var g = new createjs.Graphics();
                 g.beginStroke("#aaa");
-                g.setStrokeStyle(1);
+                g.setStrokeStyle(0.2);
 
                 g.moveTo(0, i * blockSize);
                 g.lineTo(numColumns * blockSize, i * blockSize);
@@ -613,6 +617,7 @@ var blockSize;
 
 if (screenHeight <= 460) {
     blockSize = 15;
+    document.getElementById('forkMe').style.display = 'none';    
 } else if (screenHeight > 460 && screenHeight <= 800) {
     blockSize = 25;
 }
