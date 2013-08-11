@@ -45,7 +45,7 @@ var Graphics;
 
         TetrisRoot.prototype.bindTouch = function (eventName, action) {
             var hammerOptions = {
-                swipe_velocity: 0.1
+                swipe_velocity: 0.9
             };
 
             Hammer(this.gameCanvas, hammerOptions).on(eventName, action);
@@ -106,7 +106,7 @@ var Graphics;
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(0.2);
 
-                g.moveTo(i * blockSize + 3, 0);
+                g.moveTo(i * blockSize, 0);
                 g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
