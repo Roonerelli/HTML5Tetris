@@ -54,7 +54,7 @@ module Graphics {
 
         bindTouch(eventName : string, action : Function) {
             var hammerOptions = {
-                swipe_velocity: 0.9
+                swipe_velocity: 0.1
             };
 
             Hammer(this.gameCanvas, hammerOptions).on(eventName, action);            
@@ -116,7 +116,7 @@ module Graphics {
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(0.2);
 
-                g.moveTo(i * blockSize,0);
+                g.moveTo((i * blockSize) + 2,0);
                 g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
