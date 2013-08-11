@@ -280,9 +280,14 @@ var Game;
             this.game = game;
         }
         Board.prototype.gameOver = function () {
-            return _.some(this.grid[1], function (x) {
-                return x != undefined;
-            });
+            var anyInTopRow = false;
+            for (var g = 0; g < this.grid[1].length; g++) {
+                if (this.grid[1][g] != undefined) {
+                    anyInTopRow = true;
+                    break;
+                }
+            }
+            return anyInTopRow;
         };
 
         Board.prototype.run = function () {

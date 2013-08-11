@@ -313,9 +313,8 @@ module Game {
         }
 
         gameOver() {
-            return _.some(this.grid[1], (x) => {return x != undefined;});
-
-            /*
+            //return _.some(this.grid[1], (x) => {return x != undefined;});
+            
             var anyInTopRow = false;
             for(var g = 0; g < this.grid[1].length; g++) {
                 if(this.grid[1][g] != undefined) {
@@ -323,7 +322,7 @@ module Game {
                     break;
                 }
             }
-            */
+            return anyInTopRow;
         }
 
         run() {
