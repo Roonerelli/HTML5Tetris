@@ -44,7 +44,11 @@ var Graphics;
         };
 
         TetrisRoot.prototype.bindTouch = function (eventName, action) {
-            Hammer(this.gameCanvas).on(eventName, action);
+            var hammerOptions = {
+                swipe_velocity: 0.1
+            };
+
+            Hammer(this.gameCanvas, hammerOptions).on(eventName, action);
         };
         TetrisRoot.keyBindings = {};
         return TetrisRoot;

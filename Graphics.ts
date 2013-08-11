@@ -53,7 +53,11 @@ module Graphics {
         }
 
         bindTouch(eventName : string, action : Function) {
-            Hammer(this.gameCanvas).on(eventName, action);            
+            var hammerOptions = {
+                swipe_velocity: 0.1
+            };
+
+            Hammer(this.gameCanvas, hammerOptions).on(eventName, action);            
         }
     }
 
