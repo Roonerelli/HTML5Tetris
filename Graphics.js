@@ -65,6 +65,15 @@ var Graphics;
         Ticker.prototype.setCallback = function (callback) {
             createjs.Ticker.addListener(callback);
         };
+
+        Ticker.prototype.setFPS = function (fps) {
+            createjs.Ticker.setFPS(fps);
+        };
+
+        Ticker.prototype.incrementFPS = function (inc) {
+            var currentFPS = createjs.Ticker.getFPS();
+            createjs.Ticker.setFPS(currentFPS + inc);
+        };
         return Ticker;
     })();
     Graphics.Ticker = Ticker;
@@ -93,7 +102,7 @@ var Graphics;
                 g.beginStroke("#aaa");
                 g.setStrokeStyle(0.2);
 
-                g.moveTo(i * blockSize, 0);
+                g.moveTo(i * blockSize + 3, 0);
                 g.lineTo(i * blockSize, numRows * blockSize);
                 var s = new createjs.Shape(g);
                 this.stage.addChild(s);
@@ -429,6 +438,8 @@ var Game;
         }
         Tetris.prototype.newGame = function () {
             this.setBoard();
+            this.ticks = 0;
+            this.ticker.setFPS(this.options.fps);
             this.isRunning = true;
         };
 
@@ -502,6 +513,7 @@ var Game;
                 if (this.board.gameOver()) {
                     this.gameOver();
                 } else {
+                    this.speedUp();
                     this.board.run();
                 }
             }
@@ -522,6 +534,14 @@ var Game;
                     opacity: 0.55
                 }
             });
+        };
+
+        Tetris.prototype.speedUp = function () {
+            this.ticks++;
+
+            if (this.ticks % 250 === 0) {
+                this.ticker.incrementFPS(0.1);
+            }
         };
 
         Tetris.prototype.showHelp = function () {
@@ -586,10 +606,9 @@ var Game;
 var screenHeight = document.documentElement.clientHeight;
 var blockSize;
 
-document.getElementById('forkMe').style.display = 'none';
-
 if (screenHeight <= 460) {
     blockSize = 15;
+    document.getElementById('forkMe').style.display = 'none';
 } else if (screenHeight > 460 && screenHeight <= 800) {
     blockSize = 25;
 } else if (screenHeight > 800) {
