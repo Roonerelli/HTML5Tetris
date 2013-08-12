@@ -1,6 +1,9 @@
 # HTML5 Tetris
 
-## A Tetris clone built using
+
+http://html5tetris.azurewebsites.net/ 
+
+## Dependancies:
 
 * Typescript
 * Easel.js
