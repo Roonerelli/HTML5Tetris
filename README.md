@@ -7,5 +7,5 @@ http://html5tetris.azurewebsites.net/
 
 * Typescript
 * Easel.js
-* Underscore.js
 * Hammer.js
+* lodash.js
