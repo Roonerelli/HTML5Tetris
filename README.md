@@ -5,7 +5,7 @@
 
 http://html5tetris.azurewebsites.net/ 
 
-## Dependancies
+## Dependencies
 
 * [Typescript](http://www.typescriptlang.org/) - Typed superset of Javascript
 * [Easel.js](http://www.createjs.com/#!/EaselJS) - A nice API for working with HTML5 canvas
