@@ -526,6 +526,7 @@ var Game;
 
         Tetris.prototype.pause = function () {
             Graphics.Ticker.pause();
+            this.isRunning = !this.isRunning;
         };
 
         Tetris.prototype.gameOver = function () {
@@ -551,7 +552,11 @@ var Game;
 
         Tetris.prototype.showHelp = function () {
             var self = this;
-            this.pause();
+
+            if (this.isRunning) {
+                this.pause();
+            }
+
             var modal = picoModal({
                 content: document.getElementById('instructions').innerHTML,
                 overlayStyles: {

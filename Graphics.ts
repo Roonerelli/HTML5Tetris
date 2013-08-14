@@ -553,7 +553,7 @@ module Game {
 
         pause() {
             Graphics.Ticker.pause();
-            // this.isRunning = false; TODO: uncomment 
+            this.isRunning = !this.isRunning; 
         }
 
         gameOver() {
@@ -579,7 +579,11 @@ module Game {
 
         showHelp() {
             var self = this;
-            this.pause();
+
+            if (this.isRunning) {
+                this.pause();
+            }
+            
             var modal = picoModal({
                 content: document.getElementById('instructions').innerHTML,
                 overlayStyles: {
@@ -641,7 +645,7 @@ var screenHeight = document.documentElement.clientHeight;
 var blockSize;
 
 if (screenHeight <= 460) {
-    blockSize = 15;
+    blockSize = 13;
     document.getElementById('forkMe').style.display = 'none';    
 } else if (screenHeight > 460 && screenHeight <= 800) {
     blockSize = 25;
