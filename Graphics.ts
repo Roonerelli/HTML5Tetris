@@ -93,6 +93,10 @@ module Graphics {
             createjs.Ticker.setPaused(isPaused);
         }
 
+        unpause() {
+            createjs.Ticker.setPaused(false);
+        }
+
         setCallback(callback) {
             createjs.Ticker.addListener(callback);
             //createjs.Ticker.addEventListener("tick", callback);
@@ -519,6 +523,7 @@ module Game {
             this.setBoard();
             this.ticks = 0;
             this.ticker.setFPS(this.options.fps);
+            this.ticker.unpause();
             this.isRunning = true;
             this.root.playAudio();
         }

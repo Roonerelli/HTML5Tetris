@@ -79,6 +79,10 @@ var Graphics;
             createjs.Ticker.setPaused(isPaused);
         };
 
+        Ticker.prototype.unpause = function () {
+            createjs.Ticker.setPaused(false);
+        };
+
         Ticker.prototype.setCallback = function (callback) {
             createjs.Ticker.addListener(callback);
         };
@@ -458,6 +462,7 @@ var Game;
             this.setBoard();
             this.ticks = 0;
             this.ticker.setFPS(this.options.fps);
+            this.ticker.unpause();
             this.isRunning = true;
             this.root.playAudio();
         };
