@@ -16,7 +16,7 @@ module.exports = function (grunt) {
         },
         typescript: {
             base: {
-                src: ['ts/*.ts'],
+                src: ['ts/graphics.ts'],
                 dest: 'js/graphics.js',
                 options: {
                     module: 'amd',
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: '*.ts',
+            files: '**/*.ts',
             tasks: ['typescript']
         },
         open: {

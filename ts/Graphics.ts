@@ -1,10 +1,8 @@
-/// <reference path="lib/touch.d.ts" />
-
+/// <reference path="touch.d.ts" />
 var createjs;
 var _;
 var Hammer;
 var picoModal;
-
 
 module Graphics {
 
