@@ -16,8 +16,8 @@ module.exports = function (grunt) {
         },
         typescript: {
             base: {
-                src: ['*.ts'],
-                dest: 'graphics.js',
+                src: ['/ts/*.ts'],
+                dest: '/js/graphics.js',
                 options: {
                     module: 'amd',
                     target: 'es5'
@@ -30,7 +30,7 @@ module.exports = function (grunt) {
         },
         open: {
             dev: {
-                path: 'http://localhost:8080/index.html'
+                path: 'http://localhost:8080/game.html'
             }
         }
     });

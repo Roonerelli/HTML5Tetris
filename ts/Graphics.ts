@@ -1,4 +1,4 @@
-/// <reference path="touch.d.ts" />
+/// <reference path="lib/touch.d.ts" />
 
 var createjs;
 var _;
