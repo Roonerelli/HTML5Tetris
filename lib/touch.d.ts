@@ -19,11 +19,11 @@ interface TouchEvent extends UIEvent {
     touches:TouchList;
     targetTouches:TouchList;
     changedTouches:TouchList;
-    altKey:bool;
-    metaKey:bool;
-    ctrlKey:bool;
-    shiftKey:bool;
-    initTouchEvent (type:string, canBubble:bool, cancelable:bool, view:AbstractView, detail:number, ctrlKey:bool, altKey:bool, shiftKey:bool, metaKey:bool, touches:TouchList, targetTouches:TouchList, changedTouches:TouchList);
+    altKey:boolean;
+    metaKey:boolean;
+    ctrlKey:boolean;
+    shiftKey:boolean;
+    initTouchEvent (type:string, canBubble:boolean, cancelable:boolean, view:any, detail:number, ctrlKey:boolean, altKey:boolean, shiftKey:boolean, metaKey:boolean, touches:TouchList, targetTouches:TouchList, changedTouches:TouchList);
 }
 
 declare var TouchEvent: {
@@ -31,14 +31,14 @@ declare var TouchEvent: {
     new(): TouchEvent;
 }
 
-interface HTMLElement extends Element, MSHTMLElementRangeExtensions, ElementCSSInlineStyle, MSEventAttachmentTarget, MSHTMLElementExtensions, MSNodeExtensions {
+interface HTMLElement extends Element, ElementCSSInlineStyle, MSEventAttachmentTarget, MSNodeExtensions {
     ontouchstart: (ev: TouchEvent) => any;
     ontouchmove: (ev: TouchEvent) => any;
     ontouchend: (ev: TouchEvent) => any;
     ontouchcancel: (ev: TouchEvent) => any;
 }
 
-interface Document extends Element, MSHTMLElementRangeExtensions, ElementCSSInlineStyle, MSEventAttachmentTarget, MSHTMLElementExtensions, MSNodeExtensions {
+interface Document extends Element,  ElementCSSInlineStyle, MSEventAttachmentTarget, MSNodeExtensions {
     ontouchstart: (ev: TouchEvent) => any;
     ontouchmove: (ev: TouchEvent) => any;
     ontouchend: (ev: TouchEvent) => any;

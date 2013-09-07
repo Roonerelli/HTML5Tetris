@@ -5,13 +5,13 @@ var _;
 var Hammer;
 var picoModal;
 
-
 module Graphics {
 
     export class TetrisRoot {
         
         static keyBindings = {};
         private gameCanvas;
+        private choons : HTMLAudioElement;
 
         constructor(canvasId: string, blockSize, numColumns, numRows) {
             
@@ -29,6 +29,8 @@ module Graphics {
             document.ontouchmove = function(event){
                 event.preventDefault();
             }
+
+            this.choons = <HTMLAudioElement>document.getElementById('choons');
 
             this.reSize(canvasId, blockSize, numColumns, numRows);            
         }
@@ -61,22 +63,22 @@ module Graphics {
         }
 
         playAudio() {
-            var choons = <HTMLAudioElement>document.getElementById('choons');
-            //choons.seekable.start();
-            //choons.play();
+            this.choons = <HTMLAudioElement>document.getElementById('choons');
 
-            //if(choons.duration > 0 && !choons.paused){
-                choons.pause();
-                choons.currentTime = 0;
-                choons.play();
-            //} else {
-            //    choons.play();
-            //}
+            this.choons.pause();
+            this.choons.currentTime = 0;
+            this.choons.play();
         }
 
         pauseAudio() {
-            var choons = <HTMLAudioElement>document.getElementById('choons');
-            choons.paused ? choons.play() : choons.pause();
+            if(this.choons.currentTime > 0){
+                this.choons.paused ? this.choons.play() : this.choons.pause();
+            }
+        }
+
+        stopAudio() {
+            this.choons.pause();
+            this.choons.currentTime = 0;
         }
     }
 
@@ -502,7 +504,7 @@ module Game {
         helpBtn:    Graphics.Button;
         score:      Graphics.Label;
         hiScore:    Graphics.Label;
-        isRunning:  bool;
+        isRunning:  boolean;
         options:    any;
         ticks:      number;
 
@@ -585,6 +587,7 @@ module Game {
         gameOver() {
             this.isRunning = false;
             var content =  this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
+            this.root.stopAudio();
 
             picoModal({
                 content: document.getElementById(content).innerHTML,

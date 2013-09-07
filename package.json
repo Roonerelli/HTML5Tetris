@@ -1,0 +1,30 @@
+{
+  "name": "HTML5Tetris",
+  "version": "0.0.0",
+  "description": "Html Tetris",
+  "main": "Graphics.js",
+  "scripts": {
+    "test": "run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Roonerelli/HTML5Tetris.git"
+  },
+  "keywords": [
+    "HTML5",
+    "JS",
+    "Tetris"
+  ],
+  "author": "Chris Catherall",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/Roonerelli/HTML5Tetris/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "typescript": "~0.9.1-1",
+    "grunt-typescript": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-open": "~0.2.2"
+  }
+}

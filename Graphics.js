@@ -22,6 +22,8 @@ var Graphics;
                 event.preventDefault();
             };
 
+            this.choons = document.getElementById('choons');
+
             this.reSize(canvasId, blockSize, numColumns, numRows);
         }
         TetrisRoot.prototype.reSize = function (canvasId, blockSize, numColumns, numRows) {
@@ -52,16 +54,22 @@ var Graphics;
         };
 
         TetrisRoot.prototype.playAudio = function () {
-            var choons = document.getElementById('choons');
+            this.choons = document.getElementById('choons');
 
-            choons.pause();
-            choons.currentTime = 0;
-            choons.play();
+            this.choons.pause();
+            this.choons.currentTime = 0;
+            this.choons.play();
         };
 
         TetrisRoot.prototype.pauseAudio = function () {
-            var choons = document.getElementById('choons');
-            choons.paused ? choons.play() : choons.pause();
+            if (this.choons.currentTime > 0) {
+                this.choons.paused ? this.choons.play() : this.choons.pause();
+            }
+        };
+
+        TetrisRoot.prototype.stopAudio = function () {
+            this.choons.pause();
+            this.choons.currentTime = 0;
         };
         TetrisRoot.keyBindings = {};
         return TetrisRoot;
@@ -552,6 +560,7 @@ var Game;
         Tetris.prototype.gameOver = function () {
             this.isRunning = false;
             var content = this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
+            this.root.stopAudio();
 
             picoModal({
                 content: document.getElementById(content).innerHTML,
