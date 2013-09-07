@@ -59,6 +59,25 @@ module Graphics {
 
             Hammer(this.gameCanvas, hammerOptions).on(eventName, action);            
         }
+
+        playAudio() {
+            var choons = <HTMLAudioElement>document.getElementById('choons');
+            //choons.seekable.start();
+            //choons.play();
+
+            //if(choons.duration > 0 && !choons.paused){
+                choons.pause();
+                choons.currentTime = 0;
+                choons.play();
+            //} else {
+            //    choons.play();
+            //}
+        }
+
+        pauseAudio() {
+            var choons = <HTMLAudioElement>document.getElementById('choons');
+            choons.paused ? choons.play() : choons.pause();
+        }
     }
 
     export class Ticker {
@@ -501,6 +520,7 @@ module Game {
             this.ticks = 0;
             this.ticker.setFPS(this.options.fps);
             this.isRunning = true;
+            this.root.playAudio();
         }
 
         setBoard() {
@@ -553,7 +573,8 @@ module Game {
 
         pause() {
             Graphics.Ticker.pause();
-            this.isRunning = !this.isRunning; 
+            this.isRunning = !this.isRunning;
+            this.root.pauseAudio();
         }
 
         gameOver() {

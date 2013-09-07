@@ -50,6 +50,19 @@ var Graphics;
 
             Hammer(this.gameCanvas, hammerOptions).on(eventName, action);
         };
+
+        TetrisRoot.prototype.playAudio = function () {
+            var choons = document.getElementById('choons');
+
+            choons.pause();
+            choons.currentTime = 0;
+            choons.play();
+        };
+
+        TetrisRoot.prototype.pauseAudio = function () {
+            var choons = document.getElementById('choons');
+            choons.paused ? choons.play() : choons.pause();
+        };
         TetrisRoot.keyBindings = {};
         return TetrisRoot;
     })();
@@ -446,6 +459,7 @@ var Game;
             this.ticks = 0;
             this.ticker.setFPS(this.options.fps);
             this.isRunning = true;
+            this.root.playAudio();
         };
 
         Tetris.prototype.setBoard = function () {
@@ -527,6 +541,7 @@ var Game;
         Tetris.prototype.pause = function () {
             Graphics.Ticker.pause();
             this.isRunning = !this.isRunning;
+            this.root.pauseAudio();
         };
 
         Tetris.prototype.gameOver = function () {
