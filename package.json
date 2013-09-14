@@ -2,7 +2,7 @@
   "name": "HTML5Tetris",
   "version": "0.0.0",
   "description": "Html Tetris",
-  "main": "Graphics.js",
+  "main": "js/app.js",
   "scripts": {
     "test": "run"
   },
