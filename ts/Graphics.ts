@@ -29,7 +29,7 @@ module Graphics {
                 event.preventDefault();
             }
 
-            this.choons = <HTMLAudioElement>document.getElementById('choons');
+            //this.choons = <HTMLAudioElement>document.getElementById('choons');
 
             this.reSize(canvasId, blockSize, numColumns, numRows);            
         }
@@ -62,22 +62,22 @@ module Graphics {
         }
 
         playAudio() {
-            this.choons = <HTMLAudioElement>document.getElementById('choons');
+            //this.choons = <HTMLAudioElement>document.getElementById('choons');
 
-            this.choons.pause();
-            this.choons.currentTime = 0;
-            this.choons.play();
+            //this.choons.pause();
+            //this.choons.currentTime = 0;
+            //this.choons.play();
         }
 
         pauseAudio() {
-            if(this.choons.currentTime > 0){
-                this.choons.paused ? this.choons.play() : this.choons.pause();
-            }
+            //if(this.choons.currentTime > 0){
+            //    this.choons.paused ? this.choons.play() : this.choons.pause();
+            //}
         }
 
         stopAudio() {
-            this.choons.pause();
-            this.choons.currentTime = 0;
+            //this.choons.pause();
+            //this.choons.currentTime = 0;
         }
     }
 
