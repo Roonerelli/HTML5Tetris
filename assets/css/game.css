@@ -133,3 +133,19 @@ button {
 #popups {
     display: none;
 }
+
+@media (max-device-width: 320px) { 
+    button {
+        font: 12px 'BebasNeueRegular', Arial, sans-serif;
+        height: 20px;
+    }
+
+    #scoreboard, #hiScore, #currentScore {
+        height: 20px;
+    }
+
+    #hiScore, #currentScore {
+        height: 20px;
+        font: 18px 'BebasNeueRegular', Arial, sans-serif;
+    }
+}
