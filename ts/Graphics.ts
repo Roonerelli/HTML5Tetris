@@ -11,6 +11,7 @@ module Graphics {
         static keyBindings = {};
         private gameCanvas;
         private choons : HTMLAudioElement;
+        private canPlayAudio : boolean
 
         constructor(canvasId: string, blockSize, numColumns, numRows) {
             
@@ -29,7 +30,10 @@ module Graphics {
                 event.preventDefault();
             }
 
-            //this.choons = <HTMLAudioElement>document.getElementById('choons');
+            this.choons = <HTMLAudioElement>document.getElementById('choons');
+
+            var a = document.createElement('audio');
+            this.canPlayAudio =  !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
 
             this.reSize(canvasId, blockSize, numColumns, numRows);            
         }
@@ -62,22 +66,27 @@ module Graphics {
         }
 
         playAudio() {
-            //this.choons = <HTMLAudioElement>document.getElementById('choons');
 
-            //this.choons.pause();
-            //this.choons.currentTime = 0;
-            //this.choons.play();
+            if (this.canPlayAudio) {
+                this.choons = <HTMLAudioElement>document.getElementById('choons');
+                this.choons.pause();
+                this.choons.currentTime = 0;
+                this.choons.play();
+            }
         }
+        
 
         pauseAudio() {
-            //if(this.choons.currentTime > 0){
-            //    this.choons.paused ? this.choons.play() : this.choons.pause();
-            //}
+            if(this.canPlayAudio && this.choons.currentTime > 0){
+                this.choons.paused ? this.choons.play() : this.choons.pause();
+            }
         }
 
         stopAudio() {
-            //this.choons.pause();
-            //this.choons.currentTime = 0;
+            if (this.canPlayAudio) {
+                this.choons.pause();
+                this.choons.currentTime = 0;
+            }
         }
     }
 

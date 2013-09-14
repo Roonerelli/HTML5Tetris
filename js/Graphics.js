@@ -24,6 +24,9 @@ var Graphics;
 
             this.choons = document.getElementById('choons');
 
+            var a = document.createElement('audio');
+            this.canPlayAudio = !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
+
             this.reSize(canvasId, blockSize, numColumns, numRows);
         }
         TetrisRoot.prototype.reSize = function (canvasId, blockSize, numColumns, numRows) {
@@ -54,22 +57,25 @@ var Graphics;
         };
 
         TetrisRoot.prototype.playAudio = function () {
-            this.choons = document.getElementById('choons');
-
-            this.choons.pause();
-            this.choons.currentTime = 0;
-            this.choons.play();
+            if (this.canPlayAudio) {
+                this.choons = document.getElementById('choons');
+                this.choons.pause();
+                this.choons.currentTime = 0;
+                this.choons.play();
+            }
         };
 
         TetrisRoot.prototype.pauseAudio = function () {
-            if (this.choons.currentTime > 0) {
+            if (this.canPlayAudio && this.choons.currentTime > 0) {
                 this.choons.paused ? this.choons.play() : this.choons.pause();
             }
         };
 
         TetrisRoot.prototype.stopAudio = function () {
-            this.choons.pause();
-            this.choons.currentTime = 0;
+            if (this.canPlayAudio) {
+                this.choons.pause();
+                this.choons.currentTime = 0;
+            }
         };
         TetrisRoot.keyBindings = {};
         return TetrisRoot;
