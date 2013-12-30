@@ -217,5 +217,9 @@ module Graphics {
             this.ele = document.getElementById(elementId);
             this.ele.onclick = action;
         }
+
+        blur() {
+            this.ele.blur();
+        }
     }
 }

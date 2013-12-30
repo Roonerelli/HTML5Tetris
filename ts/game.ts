@@ -303,7 +303,7 @@ module Game {
             this.touchBindings();
             this.buttonBindings();
             this.scores();
-            this.isRunning = false;
+            this.isRunning = false; 
         }
 
         newGame() {
@@ -312,6 +312,7 @@ module Game {
             this.ticker.setFPS(this.options.fps);
             this.ticker.unpause();
             this.isRunning = true;
+            this.newGameBtn.blur();
             //this.root.playAudio(); 
         }
 

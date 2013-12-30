@@ -198,6 +198,9 @@ var Graphics;
             this.ele = document.getElementById(elementId);
             this.ele.onclick = action;
         }
+        Button.prototype.blur = function () {
+            this.ele.blur();
+        };
         return Button;
     })();
     Graphics.Button = Button;
@@ -477,6 +480,7 @@ var Game;
             this.ticker.setFPS(this.options.fps);
             this.ticker.unpause();
             this.isRunning = true;
+            this.newGameBtn.blur();
         };
 
         Tetris.prototype.setBoard = function () {
