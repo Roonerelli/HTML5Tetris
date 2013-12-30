@@ -312,7 +312,7 @@ module Game {
             this.ticker.setFPS(this.options.fps);
             this.ticker.unpause();
             this.isRunning = true;
-            this.root.playAudio();
+            //this.root.playAudio(); 
         }
 
         setBoard() {
@@ -366,13 +366,13 @@ module Game {
         pause() {
             Graphics.Ticker.pause();
             this.isRunning = !this.isRunning;
-            this.root.pauseAudio();
+            //this.root.pauseAudio();
         }
 
         gameOver() {
             this.isRunning = false;
             var content =  this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
-            this.root.stopAudio();
+            //this.root.stopAudio();
 
             picoModal({
                 content: document.getElementById(content).innerHTML,
