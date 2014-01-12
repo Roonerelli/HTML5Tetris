@@ -149,3 +149,16 @@ button {
         font: 18px 'BebasNeueRegular', Arial, sans-serif;
     }
 }
+
+.pico-content{
+
+    background: #d8effa; /* Old browsers */
+background: -moz-linear-gradient(top, #d8effa 21%, #81b0c9 95%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(21%,#d8effa), color-stop(95%,#81b0c9)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #d8effa 21%,#81b0c9 95%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #d8effa 21%,#81b0c9 95%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #d8effa 21%,#81b0c9 95%); /* IE10+ */
+background: linear-gradient(to bottom, #d8effa 21%,#81b0c9 95%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8effa', endColorstr='#81b0c9',GradientType=0 ); /* IE6-9 */
+box-shadow:8px 8px 15px 2px #404040;
+}
