@@ -481,6 +481,8 @@ var Game;
             this.ticker.unpause();
             this.isRunning = true;
             this.newGameBtn.blur();
+
+            this.root.playAudio();
         };
 
         Tetris.prototype.setBoard = function () {
@@ -562,11 +564,13 @@ var Game;
         Tetris.prototype.pause = function () {
             Graphics.Ticker.pause();
             this.isRunning = !this.isRunning;
+            this.root.pauseAudio();
         };
 
         Tetris.prototype.gameOver = function () {
             this.isRunning = false;
             var content = this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
+            this.root.stopAudio();
 
             picoModal({
                 content: document.getElementById(content).innerHTML,
