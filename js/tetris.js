@@ -74,7 +74,6 @@ var Graphics;
         TetrisRoot.prototype.stopAudio = function () {
             if (this.canPlayAudio) {
                 this.choons.pause();
-                this.choons.currentTime = 0;
             }
         };
         TetrisRoot.keyBindings = {};

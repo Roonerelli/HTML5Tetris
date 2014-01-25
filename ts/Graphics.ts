@@ -85,7 +85,7 @@ module Graphics {
         stopAudio() {
             if (this.canPlayAudio) {
                 this.choons.pause();
-                this.choons.currentTime = 0;
+                //this.choons.currentTime = 0;
             }
         }
     }
