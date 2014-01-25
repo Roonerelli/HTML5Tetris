@@ -313,7 +313,6 @@ module Game {
             this.ticker.unpause();
             this.isRunning = true;
             this.newGameBtn.blur();
-            
             this.root.playAudio(); 
         }
 

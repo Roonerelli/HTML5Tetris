@@ -60,7 +60,7 @@ var Graphics;
             if (this.canPlayAudio) {
                 this.choons = document.getElementById('choons');
                 this.choons.pause();
-                this.choons.currentTime = 0;
+
                 this.choons.play();
             }
         };
@@ -480,7 +480,6 @@ var Game;
             this.ticker.unpause();
             this.isRunning = true;
             this.newGameBtn.blur();
-
             this.root.playAudio();
         };
 
