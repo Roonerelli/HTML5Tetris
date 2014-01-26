@@ -60,7 +60,7 @@ var Graphics;
             if (this.canPlayAudio) {
                 this.choons = document.getElementById('choons');
                 this.choons.pause();
-
+                this.choons.currentTime = 0;
                 this.choons.play();
             }
         };
@@ -480,7 +480,6 @@ var Game;
             this.ticker.unpause();
             this.isRunning = true;
             this.newGameBtn.blur();
-            this.root.playAudio();
         };
 
         Tetris.prototype.setBoard = function () {
@@ -562,13 +561,11 @@ var Game;
         Tetris.prototype.pause = function () {
             Graphics.Ticker.pause();
             this.isRunning = !this.isRunning;
-            this.root.pauseAudio();
         };
 
         Tetris.prototype.gameOver = function () {
             this.isRunning = false;
             var content = this.setHiScore() ? 'hiScoreMsg' : 'gameOverMsg';
-            this.root.stopAudio();
 
             picoModal({
                 content: document.getElementById(content).innerHTML,

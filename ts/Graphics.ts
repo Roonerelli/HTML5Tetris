@@ -70,7 +70,7 @@ module Graphics {
             if (this.canPlayAudio) {
                 this.choons = <HTMLAudioElement>document.getElementById('choons');
                 this.choons.pause();
-                //this.choons.currentTime = 0;
+                this.choons.currentTime = 0;
                 this.choons.play();
             }
         }
