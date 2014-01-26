@@ -537,6 +537,9 @@ var Game;
             this.helpBtn = new Graphics.Button('help', function () {
                 _this.showHelp();
             });
+            this.helpBtn = new Graphics.Button('about', function () {
+                window.location.href = 'https://github.com/Roonerelli/HTML5Tetris';
+            });
         };
 
         Tetris.prototype.scores = function () {

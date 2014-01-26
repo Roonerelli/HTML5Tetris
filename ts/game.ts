@@ -342,6 +342,7 @@ module Game {
             this.pauseBtn = new Graphics.Button('pause', () => {this.pause();});
             this.newGameBtn = new Graphics.Button('newGame', () => {this.newGame();});
             this.helpBtn = new Graphics.Button('help', () => {this.showHelp();});
+            this.helpBtn = new Graphics.Button('about', () => {window.location.href = 'https://github.com/Roonerelli/HTML5Tetris';});
         }
 
         scores() {
